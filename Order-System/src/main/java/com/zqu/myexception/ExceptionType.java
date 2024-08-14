@@ -1,0 +1,15 @@
+package com.zqu.myexception;
+
+public enum ExceptionType {
+    SYS_NOT_FOUND,
+    BUS_ID_NOT_FOUND,
+    BUS_INTEGER_ABC,
+    BUS_INVALID_KEY,
+    BUS_DELETED_EXIST_DATA,
+    BUS_DELETED_SQL_NUM_ERROR,
+    SERVER_ERROR,
+    BUS_INVALID_DATA,
+    VALIDATION_ERROR,
+    AUTHENTICATION_ERROR,
+    FORBIDDEN_ERROR;
+}

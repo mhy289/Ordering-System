@@ -1,4 +1,4 @@
-package advice;
+package com.zqu.advice;
 
 import com.zqu.pojo.Result;
 import org.springframework.web.bind.annotation.ExceptionHandler;
