@@ -1,36 +1,50 @@
 <template>
   <div id="app">
-    <nav>
+    <div id="title">
       <h1>点餐系统</h1>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/contact">Contact</router-link> |
-      <router-link to="/admin">Admin</router-link>
-      
+    </div>
+    <nav>
+      <router-link to="/">主页</router-link> |
+      <router-link to="/about">订单详情</router-link> |
+      <router-link to="/admin" v-if="false">后台管理系统 |</router-link><!--管理员-->
+      <router-link to="/login">关于我的</router-link>
     </nav>
-    <router-view/>
+    <div id="main"><router-view /></div>
+
   </div>
 </template>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: left;
-  color: #2c3e50;
-}
+  #title {
+    background: #3498db;
+    padding: 10px;
+    text-align: left;
+    color: #fff;
+  }
 
-nav {
-  padding: 30px;
-}
+  #main {
+    
+  }
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+  #app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    
+    color: #2c3e50;
+  }
 
-nav a.router-link-exact-active {
-  color: #42b983;
-}
+  nav {
+    padding: 30px;
+  }
+
+  nav a {
+    font-weight: bold;
+    color: #2c3e50;
+  }
+
+  nav a.router-link-exact-active {
+    color: #42b983;
+  }
+
 </style>

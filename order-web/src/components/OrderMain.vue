@@ -28,12 +28,15 @@ export default {
   data() {
     return {
       tabPosition: 'left',
-      activeTab: '/Test1',
+      activeTab: '/',
       tabs: [
-        { label: '用户管理', index: '/Test1' },
-        { label: '配置管理', index: '/Config' },
-        { label: '角色管理', index: '/Role' },
-        { label: '定时任务补偿', index: '/Task' }
+        //美食分类
+        { label: '推荐', index: '/' },
+        { label: '风味小吃', index: '/Config' },
+        { label: '特色小炒', index: '/Role' },
+        { label: '经典冰淇淋', index: '/Task' },
+        // 其他类目
+
       ]
     };
   },
