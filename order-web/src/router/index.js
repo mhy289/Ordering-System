@@ -4,6 +4,7 @@ import HomeView from '../views/HomeView.vue'
 import MainView from '@/views/MainView.vue'
 import Test1 from '@/components/Test1.vue'
 import Login from '@/views/Login.vue'
+import User from '@/views/User.vue'
 
 Vue.use(VueRouter)
 
@@ -14,9 +15,9 @@ const routes = [
     component: MainView
   },
   {
-    path: '/test1',
-    name: 'test1',
-    component: Test1
+    path: '/user',
+    name: 'user',
+    component: User
   },
   {
     path: '/login',

@@ -7,7 +7,7 @@
       <router-link to="/">主页</router-link> |
       <router-link to="/about">订单详情</router-link> |
       <router-link to="/admin" v-if="false">后台管理系统 |</router-link><!--管理员-->
-      <router-link to="/login">关于我的</router-link>
+      <router-link to="/User">关于我的</router-link>
     </nav>
     <div id="main"><router-view /></div>
 
