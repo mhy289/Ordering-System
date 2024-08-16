@@ -1,6 +1,5 @@
 package com.zqu.pojo;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,14 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
-
+public class Dishes {
     private Integer id;
-    //用户名
-    private String username;
-    //密码
-    private String password;
-    //管理权限
-    private Boolean admin;
-
+    private String DishesName;
+    private Double price;
+    private String description;
+    // 是否推荐
+    private Boolean recommend;
 }
