@@ -1,4 +1,4 @@
-package com.zqu.myexception;
+package com.zqu.ordersystem.myexception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

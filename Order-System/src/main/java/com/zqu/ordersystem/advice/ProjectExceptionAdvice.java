@@ -1,6 +1,6 @@
-package com.zqu.advice;
+package com.zqu.ordersystem.advice;
 
-import com.zqu.pojo.Result;
+import com.zqu.ordersystem.pojo.Result;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 

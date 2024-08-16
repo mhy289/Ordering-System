@@ -1,10 +1,7 @@
-package com.zqu.maper;
+package com.zqu.ordersystem.maper;
 
-import com.zqu.pojo.Dishes;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import com.zqu.ordersystem.pojo.Dishes;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 

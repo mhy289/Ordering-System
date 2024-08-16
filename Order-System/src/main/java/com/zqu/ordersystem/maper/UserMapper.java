@@ -1,6 +1,6 @@
-package com.zqu.maper;
+package com.zqu.ordersystem.maper;
 
-import com.zqu.pojo.User;
+import com.zqu.ordersystem.pojo.User;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;

@@ -1,4 +1,4 @@
-package com.zqu.myexception;
+package com.zqu.ordersystem.myexception;
 
 public enum ExceptionType {
     SYS_NOT_FOUND,

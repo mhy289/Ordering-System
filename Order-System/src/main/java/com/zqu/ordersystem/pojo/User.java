@@ -1,4 +1,4 @@
-package com.zqu.pojo;
+package com.zqu.ordersystem.pojo;
 
 
 import lombok.AllArgsConstructor;
