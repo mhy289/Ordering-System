@@ -16,6 +16,14 @@ public class User {
     //密码
     private String password;
     //管理权限
-    private Boolean admin;
+    private Integer admin;
+    // 头像
+    private String avatar;
+    //地址
+    private String address;
+    //电话
+    private String phone;
+    //性别
+    private Integer sex;
 
 }
