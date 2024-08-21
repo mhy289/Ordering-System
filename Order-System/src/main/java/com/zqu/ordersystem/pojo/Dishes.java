@@ -9,9 +9,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Dishes {
     private Integer id;
-    private String DishesName;
+    private String dishesName;
     private Double price;
     private String description;
     // 是否推荐
-    private Boolean recommend;
+    private Integer recommend;
+    //图片
+    private String imgUrl;
+    //状态
+    private Integer status;
+    //分类
+    private Integer categoryId;
 }

@@ -3,10 +3,13 @@ package com.zqu.ordersystem.controller;
 import com.zqu.ordersystem.pojo.Result;
 import com.zqu.ordersystem.pojo.User;
 import com.zqu.ordersystem.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin
+@Slf4j
 public class UserController {
 
     @Autowired
