@@ -15,6 +15,10 @@ public interface UserMapper {
     @Select("select * from users where id = #{id}")
     public User getUserById(Integer id);
 
+    // 按名称查询用户
+    @Select("select * from users where username = #{username}")
+    public User getUserByUsername(String username);
+
     // 添加一个用户
     @Insert("insert into users values (null, #{username}, #{password}, #{admin}, #{avatar}, #{address}, #{phone}, #{sex})")
     public Integer insertUser(User user);

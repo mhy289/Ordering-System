@@ -1,13 +1,11 @@
 package com.zqu.ordersystem.maper;
 
 import com.zqu.ordersystem.pojo.Order;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
+@Mapper
 public interface OrderMapper {
     //查询所有订单
     @Select("select * from orders")
@@ -18,7 +16,7 @@ public interface OrderMapper {
     Order selectOrderById(Integer id);
 
     //添加一个订单
-    @Insert("insert into orders values(null, #{orderName}, #{orderDetail}, #{userId}, #{dishesId}, #{status}, #{orderTime})")
+    @Insert("insert into orders values(null, #{orderName}, #{orderDetail}, #{userId}, #{status}, #{orderTime}, #{totalPrice}, #{remark})")
     int addOrder(Order order);
 
     //删除一个订单
@@ -26,6 +24,6 @@ public interface OrderMapper {
     int deleteOrderById(Integer id);
 
     //修改一个订单
-    @Update("update orders set orderName = #{orderName}, orderDetail = #{orderDetail}, userId = #{userId}, dishesId = #{dishesId}, status = #{status}, orderTime = #{orderTime} where id = #{id}")
+    @Update("update orders set order_name = #{orderName}, order_detail = #{orderDetail}, user_id = #{userId}, status = #{status}, order_time = #{orderTime}, total_price = #{totalPrice}, remark = #{remark} where id = #{id}")
     int updateOrder(Order order);
 }

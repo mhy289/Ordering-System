@@ -25,4 +25,8 @@ public interface UserService {
     //修改一个用户
     @Transactional
     Integer updateUser(User user);
+
+    //登录
+    @Transactional
+    User login(User user);
 }

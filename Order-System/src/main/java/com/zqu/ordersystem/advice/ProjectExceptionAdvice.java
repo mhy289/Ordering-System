@@ -1,5 +1,6 @@
 package com.zqu.ordersystem.advice;
 
+import com.zqu.ordersystem.myexception.BusinessException;
 import com.zqu.ordersystem.pojo.Result;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -13,5 +14,29 @@ public class ProjectExceptionAdvice {
         Result result = new Result(null,"系统错误",500);
         result.setData(ex.getMessage());
         return result;
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    public Result doBusinessException(BusinessException e){
+        Result r = new Result();
+        switch (e.getCode()){
+            case BUS_ID_NOT_FOUND:
+                r = Result.fail(501,"ID找不到");
+                r.setData(e.getMessage());
+                break;
+            case BUS_INTEGER_ABC:
+                r = Result.fail(502,"参数ABC不符合要求");
+                r.setData(e.getMessage());
+                break;
+            case BUS_INVALID_TOKEN:
+                r = Result.fail(444,"Token不合法");
+                r.setData(e.getMessage());
+                break;
+            default:
+                r.setMsg(e.getMessage());
+                r.setCode(505);
+                break;
+        }
+        return r;
     }
 }
