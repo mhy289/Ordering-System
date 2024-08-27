@@ -6,6 +6,11 @@ import Front from '../views/Front.vue'
 import test123 from '@/views/test123.vue'
 import Login from '@/views/Login.vue'
 import User from '@/views/User.vue'
+import Register from '@/views/Register.vue'
+import Manage from '../views/manage/Manage.vue'
+import {
+  Message
+} from 'element-ui';
 
 Vue.use(VueRouter)
 
@@ -43,6 +48,5 @@ const routes = [{
 const router = new VueRouter({
     routes
 })
-
 
 export default router
