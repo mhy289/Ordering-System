@@ -11,6 +11,7 @@ public class Dishes {
     private Integer id;
     private String dishesName;
     private Double price;
+    private Integer sales;
     private String description;
     // 是否推荐
     private Integer recommend;
