@@ -17,12 +17,32 @@ Vue.use(ElementUI)
 import axios from 'axios'
 
 // 设置请求的基础路径
-axios.defaults.baseURL = "http://localhost:81"
-    // 定义响应拦截器
-axios.interceptors.response.use(function(resp) {
-    let data = resp.data
-    return data
+axios.defaults.baseURL = "http://localhost:8080"
+// 定义响应拦截器
+axios.interceptors.response.use(function (resp) {
+  let data = resp.data
+  if (data.status === 444) {
+
+    // 跳转到登录页
+    Message.error("请先登录2")
+
+    router.push("/login")
+  }
+  return data
 })
+
+//定义请求拦截器
+axios.interceptors.request.use(function (req) {
+  console.log(req.url)
+  const token = localStorage.getItem("token")
+  if (token) {
+    req.headers['Authorization'] = token
+  }
+  return req;
+}, function (error) {
+  // 对请求错误做些什么
+  return Promise.reject(error);
+});
 
 Vue.prototype.$http = axios
 

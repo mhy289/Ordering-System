@@ -14,6 +14,9 @@ public interface UserService {
     //查询一个用户
     User queryUserById(Integer id);
 
+    //查询一个用户权限
+    Integer checkAdmin(Integer id);
+
     //删除一个用户
     @Transactional
     Integer deleteUserById(Integer id);

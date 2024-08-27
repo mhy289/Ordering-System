@@ -31,7 +31,7 @@ export default {
       activeTab: '/',
       tabs: [
         //美食分类
-        { label: '推荐', index: '/' },
+        { label: '推荐', index: '/aaa' },
         { label: '风味小吃', index: '/Config' },
         { label: '特色小炒', index: '/Role' },
         { label: '经典冰淇淋', index: '/Task' },

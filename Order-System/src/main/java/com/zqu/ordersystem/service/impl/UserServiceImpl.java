@@ -27,6 +27,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Integer checkAdmin(Integer id) {
+        User user = userMapper.getUserById(id);
+        return user.getAdmin();
+        // return 0 or 1;
+    }
+
+    @Override
     public Integer deleteUserById(Integer id) {
         return userMapper.deleteUser(id);
     }

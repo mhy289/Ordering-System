@@ -1,93 +1,88 @@
+<!--
+ * 用户登录页
+-->
 <template>
-  <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-    <el-form-item label="用户名" prop="username"  width="100px">
-      <el-input type="text" v-model="ruleForm.username" autocomplete="off"></el-input>
-    </el-form-item>
-    <el-form-item label="密码" prop="password"  width="100px">
-      <el-input type="password" v-model="ruleForm.password" autocomplete="off"></el-input>
-    </el-form-item>
-    <!-- <el-form-item label="年龄" prop="age">
-      <el-input v-model.number="ruleForm.age"></el-input>
-    </el-form-item> -->
-    <el-form-item>
-      <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-      <el-button @click="resetForm('ruleForm')">重置</el-button>
-    </el-form-item>
-  </el-form>
+  <div class="login-index" :style="backgroundDiv">
 
+    <div class="login-window-index">
+
+      <div class="title">
+        <b><img src="../assets/logo.png" style="width: 40px;position: relative; top: 13px;right: 6px">
+          <span style="color: #e75c09">登录点餐系统</span>
+        </b>
+      </div>
+
+      <div style="margin-top: 30px">
+
+        <el-form label-width="70px">
+
+          <el-form-item label="用户名">
+            <el-input v-model.trim="user.username" aria-required="true"></el-input>
+          </el-form-item>
+
+          <el-form-item label="密码" style="margin-top: 25px">
+            <el-input v-model.trim="user.password" show-password aria-required="true"></el-input>
+          </el-form-item>
+
+          <el-form-item style="margin: 30px 80px">
+            <el-button type="success" @click="onSubmit">登录</el-button>
+            <el-button @click="$router.push('/register')">注册</el-button>
+          </el-form-item>
+
+        </el-form>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
+  //import md5 from 'js-md5'
   export default {
+    name: "Login",
+    //初始化数据
     data() {
-      /* var checkAge = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('年龄不能为空'));
-        }
-        setTimeout(() => {
-          if (!Number.isInteger(value)) {
-            callback(new Error('请输入数字值'));
-          } else {
-            if (value < 18) {
-              callback(new Error('必须年满18岁'));
-            } else {
-              callback();
-            }
-          }
-        }, 1000);
-      }; */
-      var checkUsername = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入用户名'));
-        } else {
-          if (this.ruleForm.username !== '') {
-            this.$refs.ruleForm.validateField('username');
-          }
-          callback();
-        }
-      };
-      var checkPassword = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入密码'));
-        } else {
-          callback();
-        }
-      };
       return {
-        ruleForm: {
-          username: '',
-          password: '',
-          //age: ''
+        to: '/', //登陆成功跳转的页面
+        user: {},
+        backgroundDiv: {
+          backgroundImage: "url(" + require("../assets/img/login_back.png") + ")",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "100% 100%",
         },
-        rules: {
-          username: [{
-            validator: checkUsername,
-            trigger: 'blur'
-          }],
-          password: [{
-            validator: checkPassword,
-            trigger: 'blur'
-          }],
-          /* age: [{
-            validator: checkAge,
-            trigger: 'blur'
-          }] */
-        }
-      };
+      }
     },
+    //页面创建
+    created() {
+      this.to = this.$route.query.to ? this.$route.query.to : "/"
+    },
+    //方法
     methods: {
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
+      //登录提交
+      async onSubmit() {
+        if (this.user.username === '' || this.user.password === '') {
+          this.$message.error("账号或密码不能为空")
+          return false;
+        }
+        let res = await this.$http.post("/login", this.user)
+        //this.user.password = md5(this.user.password);
+        //this.request.post("/login", this.user).then(res => {
+        if (res.code === 200) {
+          this.$message.success({
+            message: "登陆成功",
+            showClose: true
+          })
+          let token = res.data
+          console.log(token);
+          localStorage.setItem('token', token); // 存储token
+          this.$router.push('/')
+          //localStorage.setItem("user", JSON.stringify(res.data))
+        } else {
+          this.$message.error({
+            type: 'error',
+            message: '登录失败'
+          });
+        }
+        //})
       }
     }
   }
@@ -95,11 +90,28 @@
 </script>
 
 <style scoped>
-
-.el-input {
+  .login-index {
+    background: #ffffff;
+    background-image: url("@/assets/img/login_back.png");
+    height: 100%;
     position: relative;
-    font-size: 14px;
-    width: 300px;
-}
+  }
+
+  .login-window-index {
+    padding: 20px;
+    width: 450px;
+    height: 280px;
+    background: #ffffff;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .title {
+    text-align: center;
+    margin: 30px auto;
+    font-size: 25px;
+  }
 
 </style>
