@@ -3,6 +3,7 @@ package com.zqu.ordersystem.controller;
 
 import com.zqu.ordersystem.pojo.Order;
 import com.zqu.ordersystem.pojo.Result;
+import com.zqu.ordersystem.pojo.User;
 import com.zqu.ordersystem.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,17 @@ public class OrderController {
     @GetMapping("/order/{id}")
     public Result getOneOrder(@PathVariable Integer id){
         return new Result(orderService.queryOneOrder(id),"查询成功",200);
+    }
+    //分页获取
+    @GetMapping("/orders/current/{current}/size/{size}")
+    public Result getAllPage(@PathVariable Integer current, @PathVariable Integer size) {
+        return new Result(orderService.queryPage(current, size), "查询成功", 200);
+    }
+
+    // 条件分页查询
+    @PostMapping("/orders/current/{current}/size/{size}")
+    public Result getConditionPage(@PathVariable Integer current, @PathVariable Integer size, @RequestBody Order order) {
+        return new Result(orderService.queryConditionPage(order, current, size), "查询成功", 200);
     }
     // 创建订单
     @PostMapping("/orders")

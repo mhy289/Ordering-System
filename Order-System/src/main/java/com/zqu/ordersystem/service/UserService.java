@@ -1,5 +1,6 @@
 package com.zqu.ordersystem.service;
 
+import com.zqu.ordersystem.pojo.PageItem;
 import com.zqu.ordersystem.pojo.User;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,12 @@ public interface UserService {
 
     //查询一个用户
     User queryUserById(Integer id);
+
+    //分页查询
+    PageItem<User> queryPage(Integer current, Integer size);
+
+    //条件分页查询
+    PageItem<User> queryConditionPage(User user, Integer current, Integer size);
 
     //查询一个用户权限
     Integer checkAdmin(Integer id);

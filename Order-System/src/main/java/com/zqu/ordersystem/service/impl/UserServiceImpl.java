@@ -1,6 +1,9 @@
 package com.zqu.ordersystem.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.zqu.ordersystem.maper.UserMapper;
+import com.zqu.ordersystem.pojo.PageItem;
 import com.zqu.ordersystem.pojo.User;
 import com.zqu.ordersystem.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +28,25 @@ public class UserServiceImpl implements UserService {
     public User queryUserById(Integer id) {
         return userMapper.getUserById(id);
     }
+
+    @Override
+    public PageItem<User> queryPage(Integer current, Integer size) {
+        PageHelper.startPage(current, size);
+        List<User> userList = userMapper.getAllUser();
+        long total = ((Page<User>) userList).getTotal();
+        return new PageItem<>(total, userList);
+    }
+
+    @Override
+    public PageItem<User> queryConditionPage(User user, Integer current, Integer size) {
+        PageHelper.startPage(current, size);
+        List<User> userList = userMapper.selectByCondition(user);
+        Page<User> info = (Page<User>) userList;
+        long total = info.getTotal();
+        return new PageItem<>(total, userList);
+
+    }
+
 
     @Override
     public Integer checkAdmin(Integer id) {
