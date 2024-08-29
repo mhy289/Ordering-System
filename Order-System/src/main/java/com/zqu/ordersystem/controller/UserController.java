@@ -28,6 +28,18 @@ public class UserController {
         return new Result(userService.queryUserById(id), "哈哈哈", 200);
     }
 
+    //分页获取
+    @GetMapping("/users/current/{current}/size/{size}")
+    public Result getAllPage(@PathVariable Integer current, @PathVariable Integer size) {
+        return new Result(userService.queryPage(current, size), "查询成功", 200);
+    }
+
+    // 条件分页查询
+    @PostMapping("/users/current/{current}/size/{size}")
+    public Result getConditionPage(@PathVariable Integer current, @PathVariable Integer size, @RequestBody User user) {
+        return new Result(userService.queryConditionPage(user, current, size), "查询成功", 200);
+    }
+
     // 删除单个用户
     @DeleteMapping("/user/{id}")
     public Result deleteUser(@PathVariable Integer id) {

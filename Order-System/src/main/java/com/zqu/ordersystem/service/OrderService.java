@@ -1,6 +1,8 @@
 package com.zqu.ordersystem.service;
 
 import com.zqu.ordersystem.pojo.Order;
+import com.zqu.ordersystem.pojo.PageItem;
+import com.zqu.ordersystem.pojo.User;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -12,6 +14,12 @@ public interface OrderService {
 
     //查询一个订单
     Order queryOneOrder(Integer orderId);
+
+    //分页查询
+    PageItem<Order> queryPage(Integer current, Integer size);
+
+    //条件分页查询
+    PageItem<Order> queryConditionPage(Order order, Integer current, Integer size);
 
     //添加一个订单
     @Transactional

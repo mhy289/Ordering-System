@@ -30,4 +30,9 @@ public interface UserMapper {
     // 删除一个用户
     @Delete("delete from users where id = #{id}")
     public Integer deleteUser(Integer id);
+
+    // 按条件查询用户
+    @Select("select * from users where admin = #{admin} and phone like '%${phone}%' and sex = #{sex}")
+    List<User> selectByCondition(User user);
+
 }

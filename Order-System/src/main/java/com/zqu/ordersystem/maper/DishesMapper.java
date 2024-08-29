@@ -1,6 +1,7 @@
 package com.zqu.ordersystem.maper;
 
 import com.zqu.ordersystem.pojo.Dishes;
+import com.zqu.ordersystem.pojo.Order;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -26,4 +27,8 @@ public interface DishesMapper {
     //删除菜品
     @Delete("delete from dishes where id = #{id}")
     public Integer deleteDishes(Integer id);
+
+    // 按条件查询用户
+    @Select("select * from dishes where id = #{id} and dishes_name like '%${dishesName}%' and category_id = #{categoryId}")
+    List<Dishes> selectByCondition(Dishes dishes);
 }

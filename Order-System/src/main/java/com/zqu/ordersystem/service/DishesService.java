@@ -1,6 +1,8 @@
 package com.zqu.ordersystem.service;
 
 import com.zqu.ordersystem.pojo.Dishes;
+import com.zqu.ordersystem.pojo.Order;
+import com.zqu.ordersystem.pojo.PageItem;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -24,4 +26,10 @@ public interface DishesService {
     @Transactional
     //删除单个菜品
     Integer deleteDishById(Integer id);
+
+    //分页查询
+    PageItem<Dishes> queryPage(Integer current, Integer size);
+
+    //条件分页查询
+    PageItem<Dishes> queryConditionPage(Dishes dishes, Integer current, Integer size);
 }
