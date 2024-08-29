@@ -15,15 +15,15 @@
         <!--导航栏-->
         <el-header style="border-bottom: 1px solid;">
           <Header
-              :collapse-icon="collapseIcon"
-              :collapse-title="collapseTitle"
-              @collapse="handleCollapse"
-              :user="user"
+            :collapse-icon="collapseIcon"
+            :collapse-title="collapseTitle"
+            @collapse="handleCollapse"
+            :user="user"
           ></Header>
         </el-header>
 
         <el-main :class="{bk: $route.path=='/manage/home'}">
-          <router-view @refresh="getUser"/>
+          <router-view @refresh="getUser" />
         </el-main>
 
       </el-container>
@@ -42,15 +42,15 @@
 .el-aside {
   background-color: #101010;
   color: #000000;
+  height: 100%;
 }
 
 .bk {
   width: 100%;
   /*项目背景图*/
-  background: url('@/assets/img/back.jpg') center center no-repeat;
+  background: url("@/assets/img/back.jpg") center center no-repeat;
   background-size: 100% 100%;
 }
-
 </style>
 
 <script>
@@ -59,7 +59,7 @@ import Header from "@/components/Header";
 
 export default {
   //页面初始配置
-  data() {
+  data () {
     return {
       user: {},
       isCollapse: false,
@@ -77,7 +77,7 @@ export default {
   //方法
   methods: {
     //折叠方法
-    handleCollapse() {
+    handleCollapse () {
       this.isCollapse = !this.isCollapse;
       if (this.isCollapse) {
         //点击收缩按钮
@@ -92,10 +92,10 @@ export default {
       }
     },
     //获取用户信息方法
-    getUser() {
+    getUser () {
       let username = localStorage.getItem("user")
-          ? JSON.parse(localStorage.getItem("user")).username
-          : "";
+        ? JSON.parse(localStorage.getItem("user")).username
+        : "";
       if (username) {
         //请求用户信息
         this.request.get("/userinfo/" + username).then((res) => {
@@ -105,7 +105,7 @@ export default {
       }
     },
   },
-  created() {
+  created () {
     this.getUser();
   },
 };

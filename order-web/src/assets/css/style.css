@@ -1,6 +1,7 @@
 html,
 body,
-h2 {
+h2,
+#app {
     height: 100%;
     margin: 0;
     padding: 0;

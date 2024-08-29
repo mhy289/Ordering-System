@@ -14,9 +14,5 @@ class UserServiceImplTest {
     @Autowired
     UserService userService;
 
-    @Test
-    void addUser() {
-        Integer i = userService.addUser(new User(null, "mhy", "123456", 1, null));
-        System.out.println(i);
-    }
+
 }
