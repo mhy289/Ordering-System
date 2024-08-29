@@ -32,6 +32,10 @@ public class ProjectExceptionAdvice {
                 r = Result.fail(444,"Token不合法");
                 r.setData(e.getMessage());
                 break;
+            case DISH_NOT_FOUND:
+                r = Result.fail(503,"菜品找不到");
+                r.setData(e.getMessage());
+                break;
             default:
                 r.setMsg(e.getMessage());
                 r.setCode(505);

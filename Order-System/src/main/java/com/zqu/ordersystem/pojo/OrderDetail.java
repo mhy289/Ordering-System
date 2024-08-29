@@ -16,6 +16,4 @@ public class OrderDetail {
     private Integer dishesId;
     //菜品数量
     private Integer dishesCount;
-
-
 }

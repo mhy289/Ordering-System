@@ -16,7 +16,7 @@ import java.util.List;
 public class DishesServiceImpl implements DishesService {
 
     @Autowired
-    private DishesMapper dishesMapper;
+    DishesMapper dishesMapper;
 
     @Override
     public List<Dishes> queryAllDishes() {

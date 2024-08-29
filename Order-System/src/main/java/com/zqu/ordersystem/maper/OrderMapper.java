@@ -17,7 +17,7 @@ public interface OrderMapper {
     Order selectOrderById(Integer id);
 
     //添加一个订单
-    @Insert("insert into orders values(null, #{orderName}, #{orderDetail}, #{userId}, #{status}, #{orderTime}, #{totalPrice}, #{remark})")
+    @Insert("insert into orders values(null, #{userId}, #{status}, #{orderTime}, #{totalPrice}, #{remark})")
     int addOrder(Order order);
 
     //删除一个订单
@@ -25,10 +25,10 @@ public interface OrderMapper {
     int deleteOrderById(Integer id);
 
     //修改一个订单
-    @Update("update orders set order_name = #{orderName}, order_detail = #{orderDetail}, user_id = #{userId}, status = #{status}, order_time = #{orderTime}, total_price = #{totalPrice}, remark = #{remark} where id = #{id}")
+    @Update("update orders set  user_id = #{userId}, status = #{status}, order_time = #{orderTime}, total_price = #{totalPrice}, remark = #{remark} where id = #{id}")
     int updateOrder(Order order);
 
     // 按条件查询用户
-    @Select("select * from orders where id = #{id} and order_name like '%${orderName}%' and user_id = #{userId}")
+    @Select("select * from orders where id = #{id} and status = #{status} and user_id = #{userId}")
     List<Order> selectByCondition(Order order);
 }

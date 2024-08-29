@@ -1,13 +1,13 @@
 package com.zqu.ordersystem.controller;
 
 
-import com.zqu.ordersystem.pojo.Order;
-import com.zqu.ordersystem.pojo.Result;
-import com.zqu.ordersystem.pojo.User;
+import com.zqu.ordersystem.pojo.*;
 import com.zqu.ordersystem.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 @RestController
 @Slf4j
@@ -64,5 +64,12 @@ public class OrderController {
         } else {
             return new Result(null, "删除成功", 200);
         }
+    }
+
+    //添加购物车
+    @PostMapping("/order/cart")
+    public Result addToCart(){
+
+        return new Result(null,"添加成功",200);
     }
 }
