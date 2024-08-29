@@ -5,7 +5,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 123456
-    url: jdbc:mysql://192.168.40.129:3306/ordersystem?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://localhost:3306/ordersystem?useUnicode=true&characterEncoding=utf8
   data:
     redis:
       host: 192.168.40.129

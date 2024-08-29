@@ -2,9 +2,9 @@
  * 后台管理欢迎页
 -->
 <template>
-<div style="text-align: center;width: 100%;font-size: 32px;">
-  <h1>点餐后台管理系统</h1>
-</div>
+  <div style="text-align: center;width: 100%;font-size: 32px;">
+    <h1>点餐后台管理系统</h1>
+  </div>
 </template>
 
 <script>
