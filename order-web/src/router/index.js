@@ -51,6 +51,11 @@ const routes = [{
   component: test123
 },
 {
+  path: '/login',
+  name: 'Login',
+  component: Login
+},
+{
   path: '/user',
   name: 'user',
   component: User

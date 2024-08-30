@@ -10,7 +10,7 @@
         <div class="user-actions">
           <el-button
             type="primary"
-            @click="login"
+            @click="goToLogin"
             class="login-button"
           >登录</el-button>
           <el-button @click="goToAdmin">后台管理</el-button>
@@ -66,8 +66,34 @@
                 type="warning"
                 class="cart-button"
                 icon="el-icon-shopping-cart-full"
-                @click="viewCart"
+                @click="toggleCart"
               >购物车</el-button>
+              <el-drawer
+                title="购物车"
+                :visible.sync="isCartVisible"
+                direction="rtl"
+                size="30%"
+              >
+                <el-list>
+                  <el-list-item
+                    v-for="(item, index) in cart"
+                    :key="index"
+                  >
+                    <div>{{ item.name }} x {{ item.count }}</div>
+                    <div>￥{{ item.price * item.count }}</div>
+                    <el-button @click="removeFromCart(index)">删除</el-button>
+                  </el-list-item>
+                </el-list>
+                <div class="drawer-footer">
+                  <div class="total-amount">总金额: ￥{{ calculateTotal() }}</div>
+                  <el-button
+                    type="success"
+                    class="submit-order-button"
+                    @click="payOrder"
+                  >提交订单</el-button>
+                </div>
+              </el-drawer>
+
               <el-button
                 type="success"
                 class="payment-button"
@@ -122,7 +148,9 @@ export default {
       name: '',
       price: '',
       sales: '',
-      image: ''
+      image: '',
+      cart: [], // 购物车数据
+      isCartVisible: false, // 控制右侧窗口显示
     };
   },
   beforeMount: function () {
@@ -136,8 +164,8 @@ export default {
         this.foods = res.data
       }
     },
-    login () {
-      // 执行登录操作
+    goToLogin () {
+      this.$router.push({ name: 'Login' });
     },
     goToAdmin () {
       console.log("Welcome");
@@ -150,13 +178,30 @@ export default {
       console.log('搜索内容:', this.searchQuery);
     },
     addToOrder (food) {
-      // 添加菜品到订单
+      // 添加菜品到购物车
+      const itemIndex = this.cart.findIndex(item => item.name === food.name);
+      if (itemIndex === -1) {
+        this.cart.push({ ...food, count: 1 });
+      } else {
+        this.cart[itemIndex].count += 1;
+      }
+    },
+    toggleCart () {
+      // 切换右侧窗口的显示状态
+      this.isCartVisible = !this.isCartVisible;
+    },
+    removeFromCart (index) {
+      // 从购物车中删除一项
+      this.cart.splice(index, 1);
+    },
+    calculateTotal () {
+      //计算金额
+      return this.cart.reduce((total, item) => {
+        return total + item.price * item.count;
+      }, 0);
     },
     payOrder () {
       // 支付订单
-    },
-    viewCart () {
-      // 查看购物车
     },
   },
 };
@@ -283,5 +328,35 @@ body {
   display: flex;
   justify-content: space-between;
   margin: 10px 0;
+}
+.cart-button {
+  margin-left: 10px;
+}
+
+.el-drawer__body {
+  padding: 20px;
+}
+
+.el-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+}
+.drawer-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 555px;
+}
+
+.total-amount {
+  flex: 1;
+  text-align: left;
+  font-weight: bold;
+}
+
+.submit-order-button {
+  flex: 0;
 }
 </style>
