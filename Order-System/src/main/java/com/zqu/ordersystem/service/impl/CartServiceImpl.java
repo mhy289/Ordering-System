@@ -9,12 +9,14 @@ import com.zqu.ordersystem.pojo.Carts;
 import com.zqu.ordersystem.pojo.Dishes;
 import com.zqu.ordersystem.service.CartService;
 import com.zqu.ordersystem.service.DishesService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Slf4j
 public class CartServiceImpl implements CartService {
 
     @Autowired
@@ -41,25 +43,28 @@ public class CartServiceImpl implements CartService {
 
     }
 
-    private void addProductToCart(Integer id, Integer dishesId) {
-        Carts cart = cartMapper.selectById(id);
-        if(cart == null || cart.equals("")){
+    private void addProductToCart(Integer cartId, Integer dishesId) {
+        Carts cart = cartMapper.selectById(cartId);
+        log.debug("cartId is {}", cartId);
+        if(cart == null) {
+            log.debug("cart is {}",cart);
             throw new BusinessException(ExceptionType.SERVER_ERROR,"查询购物车失败");
         }
         //查看购物车是否存在
-        CartDetail existingDetail = cartDetailMapper.findByCartIdAndDishesId(id, dishesId);
+        CartDetail existingDetail = cartDetailMapper.findByCartIdAndDishesId(cart.getUserId(), dishesId);
 
         if(existingDetail != null){
-            existingDetail.setDishesCount(existingDetail.getDishesCount()+1);
+            //existingDetail.setDishesCount(existingDetail.getDishesCount()+1);
             cartDetailMapper.updateCartDetail(existingDetail);
         } else {
             CartDetail cartDetail = new CartDetail();
-            cartDetail.setCartId(id);
+            cartDetail.setCartId(cartId);
             cartDetail.setDishesId(dishesId);
-            cartDetail.setDishesCount(1);
+            //cartDetail.setDishesCount(1);
             Integer insert = cartDetailMapper.insert(cartDetail);
+            log.debug("cartDetail is {}  insert is {}", cartDetail,insert);
             if (insert == null || insert <= 0){
-                throw new BusinessException(ExceptionType.SERVER_ERROR,"添加到购物车失败");
+                throw new BusinessException(ExceptionType.SERVER_ERROR,"添加到购物车失败2");
             }
         }
     }
@@ -71,8 +76,9 @@ public class CartServiceImpl implements CartService {
             carts = new Carts();
             carts.setUserId(userId);
             Integer insert = cartMapper.insert(carts);
+            log.debug("insert is {}", insert);
             if (insert == null || insert <= 0 || carts.getId() == null){
-                throw new BusinessException(ExceptionType.SERVER_ERROR,"添加购物车失败");
+                throw new BusinessException(ExceptionType.SERVER_ERROR,"添加购物车失败1");
             }
         }
         return carts;
@@ -81,6 +87,11 @@ public class CartServiceImpl implements CartService {
     //查看购物车
     @Override
     public List<Carts> getCartList(Integer userId) {
-        return cartMapper.selectAll();
+        return cartMapper.selectByUserId(userId);
+    }
+
+    @Override
+    public Carts querycartById(Integer id) {
+        return cartMapper.selectById(id);
     }
 }

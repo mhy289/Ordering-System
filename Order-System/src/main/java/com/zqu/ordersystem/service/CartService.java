@@ -13,4 +13,6 @@ public interface CartService {
 
     List<Carts> getCartList(Integer userId);
 
+    Carts querycartById(Integer id);
+
 }

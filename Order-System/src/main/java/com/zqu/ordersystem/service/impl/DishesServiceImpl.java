@@ -3,6 +3,8 @@ package com.zqu.ordersystem.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.zqu.ordersystem.maper.DishesMapper;
+import com.zqu.ordersystem.myexception.BusinessException;
+import com.zqu.ordersystem.myexception.ExceptionType;
 import com.zqu.ordersystem.pojo.Dishes;
 import com.zqu.ordersystem.pojo.Order;
 import com.zqu.ordersystem.pojo.PageItem;
@@ -25,7 +27,11 @@ public class DishesServiceImpl implements DishesService {
 
     @Override
     public Integer addDish(Dishes dishes) {
-        return dishesMapper.addDishes(dishes);
+        Integer addDishes = dishesMapper.addDishes(dishes);
+        if (addDishes == 0){
+            throw new BusinessException(ExceptionType.DISH_ADD_FALSE,"添加菜品失败");
+        }
+        return addDishes;
     }
 
     @Override

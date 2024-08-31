@@ -23,4 +23,6 @@ public class Order {
     private Double totalPrice;
     //备注
     private String remark;
+
+    private User user;
 }

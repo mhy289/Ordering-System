@@ -1,10 +1,7 @@
 package com.zqu.ordersystem.maper;
 
 import com.zqu.ordersystem.pojo.CartDetail;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -22,5 +19,12 @@ public interface CartDetailMapper {
     @Insert("insert into cartdetail values (null, #{cartId}, #{dishesId}, #{dishesCount})")
     Integer insert(CartDetail cartDetail);
 
-    List<CartDetail> selectByCartId(Integer id);
+    @Select("select * from cartdetail where cart_id = #{cartId}")
+    List<CartDetail> selectByCartIds(Integer id);
+
+    @Select("select * from cartdetail where cart_id = #{cartId}")
+    CartDetail selectByCartId(Integer cartId);
+
+    @Delete("delete from cartdetail where cart_id = #{cartId} and dishes_id = #{dishesId}")
+    Integer deleteByCartIds(Integer cartId, Integer dishesId);
 }

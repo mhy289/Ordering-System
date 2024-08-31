@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class PageItem<T>{
     // 总共有多少条
-    Long total;
+    private Long total;
     // 当前页的数据
-    List<T> list;
+    private List<T> list;
 }
