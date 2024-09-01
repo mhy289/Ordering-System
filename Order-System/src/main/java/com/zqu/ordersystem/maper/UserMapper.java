@@ -35,4 +35,7 @@ public interface UserMapper {
     @Select("select * from users where admin = #{admin} and phone like '%${phone}%' and sex = #{sex}")
     List<User> selectByCondition(User user);
 
+    // 注册一个用户
+    @Insert("insert into users values (null, #{username}, #{password}, 0, null, null, null, null)")
+    Integer registerUser(User user);
 }

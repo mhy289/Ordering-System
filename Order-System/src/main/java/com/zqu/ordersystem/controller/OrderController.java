@@ -2,12 +2,18 @@ package com.zqu.ordersystem.controller;
 
 
 import com.zqu.ordersystem.pojo.*;
+import com.zqu.ordersystem.service.CartDetailService;
+import com.zqu.ordersystem.service.CartService;
 import com.zqu.ordersystem.service.OrderService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
+
+import static com.zqu.ordersystem.utils.JwtUtils.getAudience;
 
 @RestController
 @Slf4j
@@ -16,6 +22,12 @@ public class OrderController {
 
     @Autowired
     OrderService orderService;
+
+    @Autowired
+    CartService cartService;
+
+    @Autowired
+    CartDetailService cartDetailService;
 
     // 获取所有订单
     @GetMapping("/orders")
@@ -66,10 +78,23 @@ public class OrderController {
         }
     }
 
-    //添加购物车
+    //添加购物车订单
     @PostMapping("/order/cart")
-    public Result addToCart(){
-
-        return new Result(null,"添加成功",200);
+    public Result addToCart(HttpServletRequest req){
+        String token = req.getHeader("Authorization");
+        Integer userId = Integer.valueOf(getAudience(token));
+        List<Carts> cartList = cartService.getCartList(userId);
+        List<CartDetail> cartDetailList = cartDetailService.queryCartList(cartList);
+        Integer i = orderService.addOrderByCart(userId, cartDetailList);
+        if(i == null || i <= 0){
+            return new Result(null, "添加失败",401);
+        } else {
+            //清空购物车
+            Integer allCart = cartDetailService.reduceAllCart(userId, cartDetailList);
+            if(allCart == null || allCart <= 0){
+                return new Result(null, "清空购物车失败",401);
+            }
+            return new Result(null, "添加成功", 200);
+        }
     }
 }

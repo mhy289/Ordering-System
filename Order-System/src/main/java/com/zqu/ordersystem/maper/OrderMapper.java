@@ -18,17 +18,20 @@ public interface OrderMapper {
 
     //添加一个订单
     @Insert("insert into orders values(null, #{userId}, #{status}, #{orderTime}, #{totalPrice}, #{remark})")
-    int addOrder(Order order);
+    Integer addOrder(Order order);
 
     //删除一个订单
     @Delete("delete from orders where id = #{id}")
-    int deleteOrderById(Integer id);
+    Integer deleteOrderById(Integer id);
 
     //修改一个订单
     @Update("update orders set  user_id = #{userId}, status = #{status}, order_time = #{orderTime}, total_price = #{totalPrice}, remark = #{remark} where id = #{id}")
-    int updateOrder(Order order);
+    Integer updateOrder(Order order);
 
     // 按条件查询用户
     @Select("select * from orders where id = #{id} and status = #{status} and user_id = #{userId}")
     List<Order> selectByCondition(Order order);
+
+    @Select("select * from orders where user_id = #{userId}")
+    Order selectOrderByuserId(Integer userId);
 }

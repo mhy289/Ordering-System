@@ -66,4 +66,15 @@ public class CartDetailServiceImpl implements CartDetailService {
         // 查询购物车中是否有该菜品
         return cartDetailMapper.deleteByCartIds(cartMapper.selectByOneUserId(userId).getId(),dishesId);
     }
+
+    @Override
+    public Integer reduceAllCart(Integer userId, List<CartDetail> cartDetailList) {
+        for(CartDetail cartDetail : cartDetailList){
+            Integer i = cartDetailMapper.deleteByCartIds(cartMapper.selectByOneUserId(userId).getId(), cartDetail.getDishesId());
+            if(i == 0){
+                throw new BusinessException(ExceptionType.CART_NOT_FOUND,"购物车找不到");
+            }
+        }
+        return 1;
+    }
 }

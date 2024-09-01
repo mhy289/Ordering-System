@@ -15,4 +15,6 @@ public interface CartDetailService {
 
     Integer reduceCart(Integer userId, Integer dishesId);
 
+    Integer reduceAllCart(Integer userId, List<CartDetail> cartDetailList);
+
 }

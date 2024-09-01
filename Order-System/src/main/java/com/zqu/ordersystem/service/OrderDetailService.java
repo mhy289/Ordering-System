@@ -1,8 +1,6 @@
 package com.zqu.ordersystem.service;
 
-import com.zqu.ordersystem.pojo.Order;
-import com.zqu.ordersystem.pojo.OrderDetail;
-import com.zqu.ordersystem.pojo.PageItem;
+import com.zqu.ordersystem.pojo.*;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -34,4 +32,6 @@ public interface OrderDetailService {
     @Transactional
     Integer deleteOrder(Integer orderDetailId);
 
+    @Transactional
+    Integer addOrderByOrder(Order order, CartDetail cartDetail);
 }

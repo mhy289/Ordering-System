@@ -39,4 +39,7 @@ public interface UserService {
     //登录
     @Transactional
     User login(User user);
+
+    @Transactional
+    Integer registerUser(User user);
 }

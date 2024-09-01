@@ -1,5 +1,6 @@
 package com.zqu.ordersystem.service;
 
+import com.zqu.ordersystem.pojo.CartDetail;
 import com.zqu.ordersystem.pojo.Order;
 import com.zqu.ordersystem.pojo.PageItem;
 import com.zqu.ordersystem.pojo.User;
@@ -32,4 +33,7 @@ public interface OrderService {
     //删除一个订单
     @Transactional
     Integer deleteOrder(Integer orderId);
+
+    //根据购物车添加订单
+    Integer addOrderByCart(Integer userId, List<CartDetail> cartDetailList);
 }
