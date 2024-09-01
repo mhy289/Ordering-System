@@ -54,13 +54,13 @@ public class CartServiceImpl implements CartService {
         CartDetail existingDetail = cartDetailMapper.findByCartIdAndDishesId(cart.getUserId(), dishesId);
 
         if(existingDetail != null){
-            //existingDetail.setDishesCount(existingDetail.getDishesCount()+1);
+            existingDetail.setDishesCount(existingDetail.getDishesCount()+1);
             cartDetailMapper.updateCartDetail(existingDetail);
         } else {
             CartDetail cartDetail = new CartDetail();
             cartDetail.setCartId(cartId);
             cartDetail.setDishesId(dishesId);
-            //cartDetail.setDishesCount(1);
+            cartDetail.setDishesCount(1);
             Integer insert = cartDetailMapper.insert(cartDetail);
             log.debug("cartDetail is {}  insert is {}", cartDetail,insert);
             if (insert == null || insert <= 0){

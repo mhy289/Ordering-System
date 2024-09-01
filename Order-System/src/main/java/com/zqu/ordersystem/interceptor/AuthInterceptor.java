@@ -39,6 +39,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             String strId = JwtUtils.getAudience(token);
             log.debug("accountId is {}", strId);
             request.setAttribute("accountId",Integer.parseInt(strId));
+            log.debug("what happened?");
             return true;
         }
     }

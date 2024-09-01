@@ -64,6 +64,11 @@ public class CartDetailServiceImpl implements CartDetailService {
     @Override
     public Integer reduceCart(Integer userId, Integer dishesId) {
         // 查询购物车中是否有该菜品
+        CartDetail cartDetail = cartDetailMapper.selectByCondtion(cartMapper.selectByOneUserId(userId).getId(),dishesId);
+        if (cartDetail.getDishesCount() > 0){
+            cartDetail.setDishesCount(cartDetail.getDishesCount() + 1);
+            cartDetailMapper.updateCartDetail(cartDetail);
+        }
         return cartDetailMapper.deleteByCartIds(cartMapper.selectByOneUserId(userId).getId(),dishesId);
     }
 

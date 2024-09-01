@@ -22,6 +22,9 @@ public interface CartDetailMapper {
     @Select("select * from cartdetail where cart_id = #{cartId}")
     List<CartDetail> selectByCartIds(Integer id);
 
+    @Select("select * from cartdetail where cart_id = #{cartId} and dishes_id = #{dishesId}")
+    CartDetail selectByCondtion(Integer cartId, Integer dishesId);
+
     @Select("select * from cartdetail where cart_id = #{cartId}")
     CartDetail selectByCartId(Integer cartId);
 

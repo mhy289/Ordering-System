@@ -34,6 +34,7 @@ public interface OrderService {
     @Transactional
     Integer deleteOrder(Integer orderId);
 
+    @Transactional
     //根据购物车添加订单
     Integer addOrderByCart(Integer userId, List<CartDetail> cartDetailList);
 }
