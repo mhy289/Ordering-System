@@ -70,4 +70,24 @@ public class CartController {
         return new Result("减少成功");
     }
 
+    //计算购物车总价
+    @GetMapping("/cart/total")
+    public Result getTotalPrice(HttpServletRequest req) {
+        String token = req.getHeader("Authorization");
+        Integer userId = Integer.valueOf(getAudience(token));
+        List<Carts> cartList = cartService.getCartList(userId);
+        List<CartDetail> cartDetailList = cartDetailService.queryCartList(cartList);
+        Double totalPrice = cartDetailService.getTotalPrice(cartDetailList);
+        return new Result(totalPrice,"查询成功");
+    }
+
+    //清空购物车
+    @DeleteMapping("/cart/clear")
+    public Result clearCart(HttpServletRequest req) {
+        String token = req.getHeader("Authorization");
+        Integer userId = Integer.valueOf(getAudience(token));
+        cartDetailService.reduceAllCart(userId, cartDetailService.queryCartList(cartService.getCartList(userId)));
+        return new Result("清空成功");
+    }
+
 }

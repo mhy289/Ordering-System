@@ -19,7 +19,7 @@
       <div class="content">
         <!-- 左侧Tab栏 -->
         <el-aside width="200px" class="categories">
-          <el-tabs v-model="activeTabName" @tab-click="handleTabClick" tab-position="left">
+          <el-tabs v-model="activeTabName" tab-position="left">
             <el-tab-pane label="推荐" name="recommend">
               <el-menu :default-active="recommendActiveIndex" @select="handleSelect('recommend',$event)">
                 <el-menu-item index="1" class="menu-item-custom">风味小吃</el-menu-item>
@@ -91,14 +91,15 @@
               <el-drawer title="购物车" :visible.sync="isCartVisible" direction="rtl" size="30%">
                 <el-list>
                   <el-list-item v-for="(item, index) in cart" :key="index">
-                    <div>{{ item.name }} x {{ item.count }}</div>
-                    <div>￥{{ item.price * item.count }}</div>
+                    <div>{{ item.dishes.dishesName }} x {{ item.dishesCount}}</div>
+                    <div>￥{{ item.dishes.price }}</div>
                     <el-button @click="removeFromCart(index)">删除</el-button>
                   </el-list-item>
                 </el-list>
                 <div class="drawer-footer">
-                  <div class="total-amount">总金额: ￥{{ calculateTotal() }}</div>
-                  <el-button type="success" class="submit-order-button" @click="payOrder">提交订单</el-button>
+                  <div class="total-amount">总金额: ￥{{this.totalPrice}}</div>
+                  <el-button type="success" class="submit-order-button" @click="paycartToOrder">提交订单</el-button>
+                  <el-button type="warn" class="submit-order-button" @click="cartClr">清空购物车</el-button>
                 </div>
               </el-drawer>
 
@@ -146,12 +147,13 @@
         isCartVisible: false,
         isLoggedIn: false, // 假设已登录
         isPerson: false,
-        username: ''
+        username: '',
+        totalPrice: 0
       };
     },
     beforeMount() {
       //this.queryAllfoods();
-      this.handleSelect('recommend',1)
+      this.handleSelect('recommend', 1)
 
     },
     mounted() {
@@ -171,12 +173,12 @@
       } */
       async handleSelect(tabName, event) {
         console.log(tabName, event)
-        let cod 
+        let cod
         let index = event
         // 根据 tabName 来更新对应的 activeIndex  
         if (tabName === 'recommend') {
           //this.recommendActiveIndex = index;
-          cod =1
+          cod = 1
         } else if (tabName === 'new') {
           //this.newActiveIndex = index;
           cod = 2
@@ -184,11 +186,12 @@
           //this.hotActiveIndex = index;
           cod = 3
         }
-        let res = await this.$http.get('/dishes/cod/'+ cod +'/index/'+ index)
+        let res = await this.$http.get('/dishes/cod/' + cod + '/index/' + index)
         if (res.code == 200) {
+          this.$message.success("查询成功")
           this.foods = res.data;
         } else {
-            this.$message.error("查询失败")
+          this.$message.error("查询失败")
         }
       },
       //检测登录状态
@@ -239,6 +242,18 @@
         console.log(food)
         let res = await this.$http.post('/cart/add/' + food.id)
         console.log(res)
+        if (res.code == 200) {
+          this.$message.success("加入购物车成功")
+          let res = await this.$http.get('/cart/list')
+          if (res.code == 200) {
+            this.getAllCount()
+            this.cart = res.data;
+          } else {
+            this.$message.error("查询购物车失败")
+          }
+        } else {
+          this.$message.error("加入购物车失败")
+        }
         /* const itemIndex = this.cart.findIndex(item => item.name === food.name);
         if (itemIndex === -1) {
           this.cart.push({
@@ -250,8 +265,18 @@
         } */
 
       },
-      toggleCart() {
+      async toggleCart() {
+        console.log("toggleCart")
         this.isCartVisible = !this.isCartVisible;
+        let res = await this.$http.get('/cart/list')
+        if (res.code == 200) {
+          this.getAllCount()
+          console.log("zzz")
+          console.log(res)
+          this.cart = res.data;
+        } else {
+          this.$message.error("查询购物车失败")
+        }
       },
       removeFromCart(index) {
         this.cart.splice(index, 1);
@@ -262,6 +287,30 @@
       payOrder() {
         // 支付订单逻辑
       },
+      goToPerson() {
+
+      },
+      paycartToOrder() {
+
+      },
+      async getAllCount() {
+        let res = await this.$http.get('/cart/total')
+        if (res.code == 200) {
+          this.totalPrice = res.data
+        } else {
+          this.$message.error("计算失败")
+        }
+      },
+      async cartClr(){
+        let res = await this.$http.delete('/cart/clear')
+        if (res.code == 200) {
+          this.$message.success("清空购物车成功")
+          this.cart = []
+          this.totalPrice = 0
+        } else {
+          this.$message.error("清空购物车失败")
+        }
+      }
     },
   };
 

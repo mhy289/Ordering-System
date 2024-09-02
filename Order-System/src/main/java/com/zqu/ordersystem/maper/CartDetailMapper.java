@@ -14,7 +14,7 @@ public interface CartDetailMapper {
 
     // 更新购物车中
     @Update("update cartdetail set  cart_id = #{cartId}, dishes_id = #{dishesId}, dishes_count = #{dishesCount} where id = #{id}")
-    void updateCartDetail(CartDetail existingDetail);
+    Integer updateCartDetail(CartDetail existingDetail);
 
     @Insert("insert into cartdetail values (null, #{cartId}, #{dishesId}, #{dishesCount})")
     Integer insert(CartDetail cartDetail);

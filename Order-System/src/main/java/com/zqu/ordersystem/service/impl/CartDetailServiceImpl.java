@@ -65,11 +65,12 @@ public class CartDetailServiceImpl implements CartDetailService {
     public Integer reduceCart(Integer userId, Integer dishesId) {
         // 查询购物车中是否有该菜品
         CartDetail cartDetail = cartDetailMapper.selectByCondtion(cartMapper.selectByOneUserId(userId).getId(),dishesId);
-        if (cartDetail.getDishesCount() > 0){
-            cartDetail.setDishesCount(cartDetail.getDishesCount() + 1);
-            cartDetailMapper.updateCartDetail(cartDetail);
+        if (cartDetail.getDishesCount() > 1){
+            cartDetail.setDishesCount(cartDetail.getDishesCount() - 1);
+            return cartDetailMapper.updateCartDetail(cartDetail);
+        } else {
+            return cartDetailMapper.deleteByCartIds(cartMapper.selectByOneUserId(userId).getId(), dishesId);
         }
-        return cartDetailMapper.deleteByCartIds(cartMapper.selectByOneUserId(userId).getId(),dishesId);
     }
 
     @Override
@@ -81,5 +82,14 @@ public class CartDetailServiceImpl implements CartDetailService {
             }
         }
         return 1;
+    }
+
+    @Override
+    public Double getTotalPrice(List<CartDetail> cartDetailList) {
+        Double totalPrice = 0.0;
+        for(CartDetail cartDetail : cartDetailList){
+            totalPrice += (cartDetail.getDishesCount()*cartDetail.getDishes().getPrice());
+        }
+        return totalPrice;
     }
 }

@@ -22,4 +22,5 @@ public interface CartDetailService {
     @Transactional
     Integer reduceAllCart(Integer userId, List<CartDetail> cartDetailList);
 
+    Double getTotalPrice(List<CartDetail> cartDetailList);
 }
