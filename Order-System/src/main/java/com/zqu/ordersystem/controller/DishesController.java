@@ -78,4 +78,10 @@ public class DishesController {
         }
         return new Result(dishes,"更新菜品成功",200);
     }
+
+    //按分类查询
+    @GetMapping("/dishes/cod/{cod}/index/{index}")
+    public Result getDishByCod(@PathVariable Integer cod, @PathVariable Integer index) {
+        return new Result(dishesService.queryByCod(cod, index), "查询成功", 200);
+    }
 }

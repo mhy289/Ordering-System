@@ -79,15 +79,22 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(0); // 0 未支付
         order.setOrderTime(new Date());
         Double totalPrice = 0.0;
+        orderMapper.addOrder(order);
+        //order.setId();
         for(CartDetail cartDetail : cartDetailList){
             totalPrice += (cartDetail.getDishesCount()*cartDetail.getDishes().getPrice());
             orderDetailService.addOrderByOrder(order, cartDetail);
         }
         order.setTotalPrice(totalPrice);
-        Integer i = orderMapper.addOrder(order);
+        Integer i = orderMapper.updateOrder(order);
         if(i == null || i <= 0){
             throw new RuntimeException("添加订单失败");
+        } else {
+//            for(CartDetail cartDetail : cartDetailList){
+//                //totalPrice += (cartDetail.getDishesCount()*cartDetail.getDishes().getPrice());
+//                orderDetailService.updateOrder();
+//            }
+            return i;
         }
-        return i;
     }
 }

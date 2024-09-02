@@ -70,9 +70,9 @@ const routes = [{
   component: User
 },
 {
-  path: '/login',
-  name: 'login',
-  component: Login
+  path: '/Register',
+  name: 'Register',
+  component: Register
 },
 {
   path: '/about',

@@ -18,6 +18,7 @@ public interface OrderMapper {
 
     //添加一个订单
     @Insert("insert into orders values(null, #{userId}, #{status}, #{orderTime}, #{totalPrice}, #{remark})")
+    @Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
     Integer addOrder(Order order);
 
     //删除一个订单

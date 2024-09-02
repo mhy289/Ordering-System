@@ -79,9 +79,10 @@ public class OrderController {
     }
 
     //添加购物车订单
-    @PostMapping("/order/cart")
+    @PostMapping("/order/addCart")
     public Result addToCart(HttpServletRequest req){
         String token = req.getHeader("Authorization");
+        log.debug("token is {}", token);
         Integer userId = Integer.valueOf(getAudience(token));
         List<Carts> cartList = cartService.getCartList(userId);
         List<CartDetail> cartDetailList = cartDetailService.queryCartList(cartList);

@@ -14,13 +14,16 @@ public interface CartDetailMapper {
 
     // 更新购物车中
     @Update("update cartdetail set  cart_id = #{cartId}, dishes_id = #{dishesId}, dishes_count = #{dishesCount} where id = #{id}")
-    void updateCartDetail(CartDetail existingDetail);
+    Integer updateCartDetail(CartDetail existingDetail);
 
     @Insert("insert into cartdetail values (null, #{cartId}, #{dishesId}, #{dishesCount})")
     Integer insert(CartDetail cartDetail);
 
     @Select("select * from cartdetail where cart_id = #{cartId}")
     List<CartDetail> selectByCartIds(Integer id);
+
+    @Select("select * from cartdetail where cart_id = #{cartId} and dishes_id = #{dishesId}")
+    CartDetail selectByCondtion(Integer cartId, Integer dishesId);
 
     @Select("select * from cartdetail where cart_id = #{cartId}")
     CartDetail selectByCartId(Integer cartId);
