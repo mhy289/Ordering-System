@@ -1,6 +1,6 @@
 <!--
   食品信息
-  增删改查
+  新增功能
 -->
 <template>
   <div style="width: 1000px; margin: 50px auto">
@@ -168,7 +168,6 @@ export default {
   name: "GoodInfo",
   data () {
     return {
-      baseApi: this.$store.state.baseApi,
       good: {
         discount: "1",
       },

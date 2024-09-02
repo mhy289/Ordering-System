@@ -53,11 +53,7 @@
       >
         <template slot="title">前台管理</template>
         <el-menu-item
-          index="/manage/category"
-          v-if="menuFlags.categoryMenu"
-        >食品分类管理</el-menu-item>
-        <el-menu-item
-          index="/manage/FoodInfo"
+          index="/manage/Foods"
           v-if="menuFlags.goodMenu"
         >
           食品管理
