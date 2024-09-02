@@ -37,6 +37,7 @@ public class CartServiceImpl implements CartService {
         }
         // 加入购物车
         Carts carts = findOrCreateCartForUser(userId);
+        log.debug("cartId is {}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", carts.getId());
 
         addProductToCart(carts.getId(), dishesId);
         return carts;
@@ -51,8 +52,9 @@ public class CartServiceImpl implements CartService {
             throw new BusinessException(ExceptionType.SERVER_ERROR,"查询购物车失败");
         }
         //查看购物车是否存在
-        CartDetail existingDetail = cartDetailMapper.findByCartIdAndDishesId(cart.getUserId(), dishesId);
-
+        CartDetail existingDetail = cartDetailMapper.findByCartIdAndDishesId(cartId, dishesId);
+        log.debug("cartId is {} dishesId is {}", cartId, dishesId);
+        log.debug("existingDetail is {}", existingDetail);
         if(existingDetail != null){
             existingDetail.setDishesCount(existingDetail.getDishesCount()+1);
             cartDetailMapper.updateCartDetail(existingDetail);
@@ -71,7 +73,8 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Carts findOrCreateCartForUser(Integer userId) {
-        Carts carts = cartMapper.selectById(userId);
+        Carts carts = cartMapper.selectByOneUserId(userId);
+        log.debug("carts is {}??????????? userId is {}", carts,userId);
         if (carts == null){
             carts = new Carts();
             carts.setUserId(userId);

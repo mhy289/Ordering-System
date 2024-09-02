@@ -65,4 +65,9 @@ public class DishesServiceImpl implements DishesService {
         long total = info.getTotal();
         return new PageItem<>(total, dishesList);
     }
+
+    @Override
+    public List<Dishes> queryByCod(Integer cod, Integer index) {
+        return dishesMapper.queryByCod(cod, index);
+    }
 }

@@ -32,4 +32,6 @@ public interface DishesService {
 
     //条件分页查询
     PageItem<Dishes> queryConditionPage(Dishes dishes, Integer current, Integer size);
+
+    List<Dishes> queryByCod(Integer cod, Integer index);
 }

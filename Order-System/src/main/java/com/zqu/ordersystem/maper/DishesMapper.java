@@ -28,7 +28,10 @@ public interface DishesMapper {
     @Delete("delete from dishes where id = #{id}")
     public Integer deleteDishes(Integer id);
 
-    // 按条件查询用户
+    // 按条件查询菜品
     @Select("select * from dishes where id = #{id} and dishes_name like '%${dishesName}%' and category_id = #{categoryId}")
     List<Dishes> selectByCondition(Dishes dishes);
+
+    @Select("select * from dishes where recommend = #{cod} and category_id = #{index}")
+    List<Dishes> queryByCod(Integer cod, Integer index);
 }
