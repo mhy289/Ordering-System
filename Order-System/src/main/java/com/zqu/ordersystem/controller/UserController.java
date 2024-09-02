@@ -4,6 +4,7 @@ import com.zqu.ordersystem.pojo.Result;
 import com.zqu.ordersystem.pojo.User;
 import com.zqu.ordersystem.service.UserService;
 import com.zqu.ordersystem.utils.JwtUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -117,5 +118,15 @@ public class UserController {
         result.setCode(200);
         result.setMsg("注册成功");
         return result;
+    }
+
+    //根据token获取用户
+    @GetMapping("/user/token")
+    public Result getUserByToken(HttpServletRequest req){
+        String token = req.getHeader("Authorization");
+        log.debug("token is {}", token);
+        Integer userId = Integer.valueOf(JwtUtils.getAudience(token));
+        User user = userService.queryUserById(userId);
+        return new Result(user, "获取成功", 200);
     }
 }

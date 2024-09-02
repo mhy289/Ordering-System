@@ -1,18 +1,13 @@
 <template>
   <div id="app">
     <!-- 顶部导航栏 -->
-    <el-header
-      height="60px"
-      class="header"
-    >
+    <el-header height="60px" class="header">
       <div class="header-content">
         <div class="title">餐厅点餐系统</div>
         <div class="user-actions">
-          <el-button
-            type="primary"
-            @click="goToLogin"
-            class="login-button"
-          >登录</el-button>
+          <el-button type="primary" @click="goToLogin" class="login-button" v-if="!isLoggedIn">登录</el-button>
+          <el-button type="success" @click="LoginOut" class="login-button" v-if="isPerson">退出登录</el-button>
+          <el-button type="success" @click="goToPerson" class="login-button" v-if="isPerson">{{this.username}}</el-button>
           <el-button @click="goToAdmin">后台管理</el-button>
         </div>
       </div>
@@ -22,25 +17,13 @@
     <el-main>
       <div class="content">
         <!-- 左侧Tab栏 -->
-        <el-aside
-          width="200px"
-          class="categories"
-        >
+        <el-aside width="200px" class="categories">
           <el-tabs tab-position="left">
             <el-tab-pane label="推荐">
               <el-menu :default-active="activeMenu">
-                <el-menu-item
-                  index="1"
-                  class="menu-item-custom"
-                >风味小吃</el-menu-item>
-                <el-menu-item
-                  index="2"
-                  class="menu-item-custom"
-                >特色小炒</el-menu-item>
-                <el-menu-item
-                  index="3"
-                  class="menu-item-custom"
-                >饭后甜点</el-menu-item>
+                <el-menu-item index="1" class="menu-item-custom">风味小吃</el-menu-item>
+                <el-menu-item index="2" class="menu-item-custom">特色小炒</el-menu-item>
+                <el-menu-item index="3" class="menu-item-custom">饭后甜点</el-menu-item>
               </el-menu>
             </el-tab-pane>
             <el-tab-pane label="最新">
@@ -57,38 +40,19 @@
           <!-- 搜索栏和按钮在上方 -->
           <div class="search-and-payment">
             <div class="search-bar-container">
-              <el-input
-                v-model="searchQuery"
-                placeholder="搜索菜品..."
-                class="search-bar"
-              >
+              <el-input v-model="searchQuery" placeholder="搜索菜品..." class="search-bar">
                 <template #append>
-                  <el-button
-                    icon="el-icon-search"
-                    @click="search"
-                  ></el-button>
+                  <el-button icon="el-icon-search" @click="search"></el-button>
                 </template>
               </el-input>
             </div>
             <div class="button-container">
               <!-- 购物车按钮 -->
-              <el-button
-                type="warning"
-                class="cart-button"
-                icon="el-icon-shopping-cart-full"
-                @click="toggleCart"
-              >购物车</el-button>
-              <el-drawer
-                title="购物车"
-                :visible.sync="isCartVisible"
-                direction="rtl"
-                size="30%"
-              >
+              <el-button type="warning" class="cart-button" icon="el-icon-shopping-cart-full"
+                @click="toggleCart">购物车</el-button>
+              <el-drawer title="购物车" :visible.sync="isCartVisible" direction="rtl" size="30%">
                 <el-list>
-                  <el-list-item
-                    v-for="(item, index) in cart"
-                    :key="index"
-                  >
+                  <el-list-item v-for="(item, index) in cart" :key="index">
                     <div>{{ item.name }} x {{ item.count }}</div>
                     <div>￥{{ item.price * item.count }}</div>
                     <el-button @click="removeFromCart(index)">删除</el-button>
@@ -96,19 +60,11 @@
                 </el-list>
                 <div class="drawer-footer">
                   <div class="total-amount">总金额: ￥{{ calculateTotal() }}</div>
-                  <el-button
-                    type="success"
-                    class="submit-order-button"
-                    @click="payOrder"
-                  >提交订单</el-button>
+                  <el-button type="success" class="submit-order-button" @click="payOrder">提交订单</el-button>
                 </div>
               </el-drawer>
 
-              <el-button
-                type="success"
-                class="payment-button"
-                @click="payOrder"
-              >支付订单</el-button>
+              <el-button type="success" class="payment-button" @click="payOrder">支付订单</el-button>
             </div>
           </div>
 
@@ -116,29 +72,16 @@
           <div class="food-display-container">
             <el-main class="food-display">
               <el-row :gutter="20">
-                <el-col
-                  :span="6"
-                  v-for="(food, index) in foods"
-                  :key="index"
-                  class="food-item"
-                >
+                <el-col :span="6" v-for="(food, index) in foods" :key="index" class="food-item">
                   <el-card :body-style="{ padding: '10px' }">
-                    <img
-                      :src="food.image"
-                      class="food-image"
-                      alt="food image"
-                    />
+                    <img :src="food.image" class="food-image" alt="food image" />
                     <div style="padding: 14px;">
                       <span>{{ food.dishesName }}</span>
                       <div class="bottom-info">
                         <span>价格: {{ food.price }} 元</span>
                         <span>销量: {{ food.sales }}</span>
                       </div>
-                      <el-button
-                        type="primary"
-                        icon="el-icon-plus"
-                        @click="addToOrder(food)"
-                      >加入购物车</el-button>
+                      <el-button type="primary" icon="el-icon-plus" @click="addToOrder(food)">加入购物车</el-button>
                     </div>
                   </el-card>
                 </el-col>
@@ -152,226 +95,280 @@
 </template>
 
 <script>
-export default {
-  data () {
-    return {
-      searchQuery: '',
-      activeMenu: '1',
-      foods: [],
-      cart: [],
-      isCartVisible: false,
-    };
-  },
-  beforeMount () {
-    this.queryAllfoods();
-  },
-  methods: {
-    async queryAllfoods () {
-      let res = await this.$http.get('/dishes');
-      if (res.code == 200) {
-        this.foods = res.data;
-      }
+  export default {
+    data() {
+      return {
+        searchQuery: '',
+        activeMenu: '1',
+        foods: [],
+        cart: [],
+        isCartVisible: false,
+        isLoggedIn: false, // 假设已登录
+        isPerson: false,
+        username: ''
+      };
     },
-    goToLogin () {
-      this.$router.push({ name: 'Login' });
+    beforeMount() {
+      this.queryAllfoods();
+
     },
-    goToAdmin () {
-      this.$router.push({ name: 'manage' });
+    mounted() {
+      this.isLogged();
     },
-    search () {
-      console.log('搜索内容:', this.searchQuery);
+    methods: {
+      async queryAllfoods() {
+        let res = await this.$http.get('/dishes');
+        if (res.code == 200) {
+          this.foods = res.data;
+        }
+      },
+      //检测登录状态
+      async isLogged() {
+        //获取token
+        let token = localStorage.getItem('token');
+        console.log(token);
+        if (token) {
+          console.log("success");
+          this.isLoggedIn = true;
+          this.isPerson = true;
+          let res = await this.$http.get('/user/token');
+          if (res.code == 200) {
+            this.username = res.data.username;
+          } else{
+            this.$message.error("获取用户信息失败")
+          }
+        } else {
+          this.$message.error("请先登录")
+        }
+      },
+      LoginOut(){
+        //删除token
+        localStorage.removeItem('token');
+        this.isLoggedIn = false;
+        this.isPerson = false;
+        this.username = '';
+        this.$router.push({
+          name: 'Front'
+        });
+        //刷新页面
+        //window.location.reload();
+      },
+      goToLogin() {
+        this.$router.push({
+          name: 'Login'
+        });
+      },
+      goToAdmin() {
+        this.$router.push({
+          name: 'manage'
+        });
+      },
+      search() {
+        console.log('搜索内容:', this.searchQuery);
+      },
+      addToOrder(food) {
+        const itemIndex = this.cart.findIndex(item => item.name === food.name);
+        if (itemIndex === -1) {
+          this.cart.push({
+            ...food,
+            count: 1
+          });
+        } else {
+          this.cart[itemIndex].count += 1;
+        }
+      },
+      toggleCart() {
+        this.isCartVisible = !this.isCartVisible;
+      },
+      removeFromCart(index) {
+        this.cart.splice(index, 1);
+      },
+      calculateTotal() {
+        return this.cart.reduce((total, item) => total + item.price * item.count, 0);
+      },
+      payOrder() {
+        // 支付订单逻辑
+      },
     },
-    addToOrder (food) {
-      const itemIndex = this.cart.findIndex(item => item.name === food.name);
-      if (itemIndex === -1) {
-        this.cart.push({ ...food, count: 1 });
-      } else {
-        this.cart[itemIndex].count += 1;
-      }
-    },
-    toggleCart () {
-      this.isCartVisible = !this.isCartVisible;
-    },
-    removeFromCart (index) {
-      this.cart.splice(index, 1);
-    },
-    calculateTotal () {
-      return this.cart.reduce((total, item) => total + item.price * item.count, 0);
-    },
-    payOrder () {
-      // 支付订单逻辑
-    },
-  },
-};
+  };
+
 </script>
 
 <style scoped>
-body {
-  background-color: #aec6f7;
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-}
+  body {
+    background-color: #aec6f7;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
 
-.header {
-  background-color: #89cff0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
-}
+  .header {
+    background-color: #89cff0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+  }
 
-.header-content {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  justify-content: space-between;
-}
+  .header-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+  }
 
-.title {
-  font-size: 24px;
-  font-weight: bold;
-  text-align: center;
-  flex: 1;
-}
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    flex: 1;
+  }
 
-.user-actions {
-  display: flex;
-  align-items: center;
-}
+  .user-actions {
+    display: flex;
+    align-items: center;
+  }
 
-.login-button {
-  background-color: #409eff;
-  color: white;
-  margin-right: 10px;
-}
+  .login-button {
+    background-color: #409eff;
+    color: white;
+    margin-right: 10px;
+  }
 
-.content {
-  background-color: #aec6f7;
-  display: flex;
-  padding: 20px;
-  border-radius: 8px;
-}
+  .content {
+    background-color: #aec6f7;
+    display: flex;
+    padding: 20px;
+    border-radius: 8px;
+  }
 
-.categories {
-  background-color: #ffffff;
-  border-radius: 8px;
-  padding: 10px;
-}
+  .categories {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 10px;
+  }
 
-.food-area {
-  flex: 1;
-  padding: 20px;
-}
+  .food-area {
+    flex: 1;
+    padding: 20px;
+  }
 
-.search-and-payment {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-  padding: 0 10px;
-  /* 让内容在食品展示区域内有一定的内边距 */
-}
+  .search-and-payment {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 10px;
+    /* 让内容在食品展示区域内有一定的内边距 */
+  }
 
-.search-bar-container {
-  flex: 1;
-  /* 使搜索栏容器占据剩余空间 */
-}
+  .search-bar-container {
+    flex: 1;
+    /* 使搜索栏容器占据剩余空间 */
+  }
 
-.search-bar {
-  width: 25%;
-}
+  .search-bar {
+    width: 25%;
+  }
 
-.button-container {
-  display: flex;
-  align-items: center;
-}
+  .button-container {
+    display: flex;
+    align-items: center;
+  }
 
-.cart-button {
-  background-color: #ffc107;
-  margin-left: 10px;
-  /* 按钮之间的间距 */
-}
+  .cart-button {
+    background-color: #ffc107;
+    margin-left: 10px;
+    /* 按钮之间的间距 */
+  }
 
-.payment-button {
-  background-color: #67c23a;
-  /* 修改按钮颜色以匹配整体设计 */
-  margin-left: 10px;
-}
+  .payment-button {
+    background-color: #67c23a;
+    /* 修改按钮颜色以匹配整体设计 */
+    margin-left: 10px;
+  }
 
-.food-display-container {
-  margin-top: 20px;
-}
+  .food-display-container {
+    margin-top: 20px;
+  }
 
-.food-display {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  border: 2px solid #000;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  min-height: 600px; /* 设置黑框区域的最小高度 */
-  overflow: hidden;
-}
+  .food-display {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    border: 2px solid #000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-height: 600px;
+    /* 设置黑框区域的最小高度 */
+    overflow: hidden;
+  }
 
-.food-item {
-  margin-bottom: 20px;
-  /* 增加食品项之间的空白区域 */
-}
+  .food-item {
+    margin-bottom: 20px;
+    /* 增加食品项之间的空白区域 */
+  }
 
-.food-image {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 8px;
-}
+  .food-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
 
-.bottom-info {
-  display: flex;
-  justify-content: space-between;
-  margin: 10px 0;
-}
-.cart-button {
-  margin-left: 10px;
-}
+  .bottom-info {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+  }
 
-.el-drawer__body {
-  padding: 20px;
-}
+  .cart-button {
+    margin-left: 10px;
+  }
 
-.el-list-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 0;
-}
-.drawer-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 20px;
-}
+  .el-drawer__body {
+    padding: 20px;
+  }
 
-.total-amount {
-  flex: 1;
-  text-align: left;
-  font-weight: bold;
-}
+  .el-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+  }
 
-.submit-order-button {
-  flex: 0;
-}
-.el-main {
-  background-color: #aec6f7; /* 设置 el-main 的背景颜色 */
-  padding: 20px;
-  border-radius: 8px;
-}
+  .drawer-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+  }
 
-.el-aside {
-  background-color: #e9eaec; /* 设置 el-aside 的背景颜色 */
-  border-radius: 8px;
-  padding: 10px;
-}
+  .total-amount {
+    flex: 1;
+    text-align: left;
+    font-weight: bold;
+  }
 
-.menu-item-custom {
-  background-color: #e9eaec; /* 背景 */
-}
+  .submit-order-button {
+    flex: 0;
+  }
+
+  .el-main {
+    background-color: #aec6f7;
+    /* 设置 el-main 的背景颜色 */
+    padding: 20px;
+    border-radius: 8px;
+  }
+
+  .el-aside {
+    background-color: #e9eaec;
+    /* 设置 el-aside 的背景颜色 */
+    border-radius: 8px;
+    padding: 10px;
+  }
+
+  .menu-item-custom {
+    background-color: #e9eaec;
+    /* 背景 */
+  }
+
 </style>
