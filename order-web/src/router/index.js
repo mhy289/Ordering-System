@@ -6,6 +6,7 @@ import Front from '../views/Front.vue'
 import test123 from '@/views/test123.vue'
 import Login from '@/views/Login.vue'
 import User from '@/views/User.vue'
+import FoodInfo from '@/views/manage/file/FoodInfo.vue'
 import Register from '@/views/Register.vue'
 import Manage from '../views/manage/Manage.vue'
 import {
@@ -19,6 +20,7 @@ const routes = [{
   name: 'Front',
   component: Front
 },
+
 {
   path: '/manage',
   name: 'manage',
@@ -40,6 +42,12 @@ const routes = [{
     },
     component: () =>
       import('../views/manage/Home.vue'),
+
+  },
+  {
+    path: 'FoodInfo',
+    name: 'FoodInfo',
+    component: FoodInfo
   },
     //{path: 'user', name: 'user', meta: {title:'用户管理',path: '系统管理/用户管理',requireAuth: true}, component: () => import('../views/manage/User.vue'),},
   ]
@@ -49,6 +57,11 @@ const routes = [{
   path: '/test123',
   name: 'test123',
   component: test123
+},
+{
+  path: '/login',
+  name: 'Login',
+  component: Login
 },
 {
   path: '/user',
