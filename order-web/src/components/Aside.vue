@@ -57,9 +57,11 @@
           v-if="menuFlags.categoryMenu"
         >食品分类管理</el-menu-item>
         <el-menu-item
-          index="/manage/good"
+          index="/manage/FoodInfo"
           v-if="menuFlags.goodMenu"
-        >食品管理</el-menu-item>
+        >
+          食品管理
+        </el-menu-item>
         <el-menu-item
           index="/manage/order"
           v-if="menuFlags.orderMenu"

@@ -11,7 +11,10 @@ export default {
 </script>
 
 <style>
-/*
-  全局样式
-*/
+body {
+  background-color: #aec6f7; /* 设置全局背景颜色为 #AEC6F7 */
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
 </style>

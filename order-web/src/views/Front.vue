@@ -29,9 +29,18 @@
           <el-tabs tab-position="left">
             <el-tab-pane label="推荐">
               <el-menu :default-active="activeMenu">
-                <el-menu-item index="1">风味小吃</el-menu-item>
-                <el-menu-item index="2">特色小炒</el-menu-item>
-                <el-menu-item index="3">饭后甜点</el-menu-item>
+                <el-menu-item
+                  index="1"
+                  class="menu-item-custom"
+                >风味小吃</el-menu-item>
+                <el-menu-item
+                  index="2"
+                  class="menu-item-custom"
+                >特色小炒</el-menu-item>
+                <el-menu-item
+                  index="3"
+                  class="menu-item-custom"
+                >饭后甜点</el-menu-item>
               </el-menu>
             </el-tab-pane>
             <el-tab-pane label="最新">
@@ -45,6 +54,7 @@
 
         <!-- 右侧食品展示区域 -->
         <div class="food-area">
+          <!-- 搜索栏和按钮在上方 -->
           <div class="search-and-payment">
             <div class="search-bar-container">
               <el-input
@@ -102,36 +112,39 @@
             </div>
           </div>
 
-          <el-main class="food-display">
-            <el-row :gutter="20">
-              <el-col
-                :span="6"
-                v-for="(food, index) in foods"
-                :key="index"
-                class="food-item"
-              >
-                <el-card :body-style="{ padding: '10px' }">
-                  <img
-                    :src="food.image"
-                    class="food-image"
-                    alt="food image"
-                  />
-                  <div style="padding: 14px;">
-                    <span>{{ food.dishesName }}</span>
-                    <div class="bottom-info">
-                      <span>价格: {{ food.price }} 元</span>
-                      <span>销量: {{ food.sales }}</span>
+          <!-- 黑框区域 -->
+          <div class="food-display-container">
+            <el-main class="food-display">
+              <el-row :gutter="20">
+                <el-col
+                  :span="6"
+                  v-for="(food, index) in foods"
+                  :key="index"
+                  class="food-item"
+                >
+                  <el-card :body-style="{ padding: '10px' }">
+                    <img
+                      :src="food.image"
+                      class="food-image"
+                      alt="food image"
+                    />
+                    <div style="padding: 14px;">
+                      <span>{{ food.dishesName }}</span>
+                      <div class="bottom-info">
+                        <span>价格: {{ food.price }} 元</span>
+                        <span>销量: {{ food.sales }}</span>
+                      </div>
+                      <el-button
+                        type="primary"
+                        icon="el-icon-plus"
+                        @click="addToOrder(food)"
+                      >加入购物车</el-button>
                     </div>
-                    <el-button
-                      type="primary"
-                      icon="el-icon-plus"
-                      @click="addToOrder(food)"
-                    >加入购物车</el-button>
-                  </div>
-                </el-card>
-              </el-col>
-            </el-row>
-          </el-main>
+                  </el-card>
+                </el-col>
+              </el-row>
+            </el-main>
+          </div>
         </div>
       </div>
     </el-main>
@@ -145,40 +158,30 @@ export default {
       searchQuery: '',
       activeMenu: '1',
       foods: [],
-      name: '',
-      price: '',
-      sales: '',
-      image: '',
-      cart: [], // 购物车数据
-      isCartVisible: false, // 控制右侧窗口显示
+      cart: [],
+      isCartVisible: false,
     };
   },
-  beforeMount: function () {
-    this.queryAllfoods()
+  beforeMount () {
+    this.queryAllfoods();
   },
   methods: {
     async queryAllfoods () {
-      let res = await this.$http.get("/dishes")
-      console.log(res)
+      let res = await this.$http.get('/dishes');
       if (res.code == 200) {
-        this.foods = res.data
+        this.foods = res.data;
       }
     },
     goToLogin () {
       this.$router.push({ name: 'Login' });
     },
     goToAdmin () {
-      console.log("Welcome");
-      this.$router.push({
-        name: 'manage'
-      });
+      this.$router.push({ name: 'manage' });
     },
     search () {
-      // 搜索功能
       console.log('搜索内容:', this.searchQuery);
     },
     addToOrder (food) {
-      // 添加菜品到购物车
       const itemIndex = this.cart.findIndex(item => item.name === food.name);
       if (itemIndex === -1) {
         this.cart.push({ ...food, count: 1 });
@@ -187,40 +190,31 @@ export default {
       }
     },
     toggleCart () {
-      // 切换右侧窗口的显示状态
       this.isCartVisible = !this.isCartVisible;
     },
     removeFromCart (index) {
-      // 从购物车中删除一项
       this.cart.splice(index, 1);
     },
     calculateTotal () {
-      //计算金额
-      return this.cart.reduce((total, item) => {
-        return total + item.price * item.count;
-      }, 0);
+      return this.cart.reduce((total, item) => total + item.price * item.count, 0);
     },
     payOrder () {
-      // 支付订单
+      // 支付订单逻辑
     },
   },
 };
-
 </script>
 
 <style scoped>
-/* 全局样式 */
 body {
-  font-family: Arial, sans-serif;
+  background-color: #aec6f7;
   margin: 0;
   padding: 0;
-  background-color: #f7f7f7;
-  color: #333;
+  font-family: Arial, sans-serif;
 }
 
 .header {
-  background-color: #e6f7ff;
-  /* 淡蓝色背景 */
+  background-color: #89cff0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -253,7 +247,10 @@ body {
 }
 
 .content {
+  background-color: #aec6f7;
   display: flex;
+  padding: 20px;
+  border-radius: 8px;
 }
 
 .categories {
@@ -282,7 +279,6 @@ body {
 
 .search-bar {
   width: 25%;
-  /* 使搜索栏充满其容器 */
 }
 
 .button-container {
@@ -292,9 +288,6 @@ body {
 
 .cart-button {
   background-color: #ffc107;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   margin-left: 10px;
   /* 按钮之间的间距 */
 }
@@ -303,13 +296,20 @@ body {
   background-color: #67c23a;
   /* 修改按钮颜色以匹配整体设计 */
   margin-left: 10px;
-  /* 确保按钮之间的间距 */
+}
+
+.food-display-container {
+  margin-top: 20px;
 }
 
 .food-display {
   background-color: #ffffff;
   padding: 20px;
   border-radius: 8px;
+  border: 2px solid #000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  min-height: 600px; /* 设置黑框区域的最小高度 */
+  overflow: hidden;
 }
 
 .food-item {
@@ -347,7 +347,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 555px;
+  padding-top: 20px;
 }
 
 .total-amount {
@@ -358,5 +358,20 @@ body {
 
 .submit-order-button {
   flex: 0;
+}
+.el-main {
+  background-color: #aec6f7; /* 设置 el-main 的背景颜色 */
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.el-aside {
+  background-color: #e9eaec; /* 设置 el-aside 的背景颜色 */
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.menu-item-custom {
+  background-color: #e9eaec; /* 背景 */
 }
 </style>
