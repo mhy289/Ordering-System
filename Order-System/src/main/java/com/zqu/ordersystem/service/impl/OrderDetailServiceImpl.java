@@ -3,9 +3,7 @@ package com.zqu.ordersystem.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.zqu.ordersystem.maper.OrderDetailMapper;
-import com.zqu.ordersystem.pojo.Order;
-import com.zqu.ordersystem.pojo.OrderDetail;
-import com.zqu.ordersystem.pojo.PageItem;
+import com.zqu.ordersystem.pojo.*;
 import com.zqu.ordersystem.service.OrderDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,5 +56,16 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     @Override
     public Integer deleteOrder(Integer orderDetailId) {
         return orderDetailMapper.deleteOrderById(orderDetailId);
+    }
+
+    @Override
+    public Integer addOrderByOrder(Order order, CartDetail cartDetail) {
+        OrderDetail orderDetail = new OrderDetail();
+        orderDetail.setOrderId(order.getId());
+        orderDetail.setDishesId(cartDetail.getDishesId());
+        orderDetail.setDishesCount(cartDetail.getDishesCount());
+        orderDetail.setOrder(order);
+        orderDetail.setDishes(cartDetail.getDishes());
+        return orderDetailMapper.addOrder(orderDetail);
     }
 }

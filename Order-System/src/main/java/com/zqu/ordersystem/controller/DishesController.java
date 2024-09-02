@@ -59,6 +59,7 @@ public class DishesController {
     @PostMapping("/dish")
     public Result createDish(@RequestBody Dishes dishes) {
         Integer add = dishesService.addDish(dishes);
+        log.debug("add is {}",add);
         if(add == null || add <= 0){
             log.error("创建菜品失败, dishes: {}", dishes);
             return new Result(null,"创建菜品失败",401);

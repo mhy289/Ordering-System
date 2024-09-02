@@ -81,4 +81,9 @@ public class UserServiceImpl implements UserService {
             return null;
         }
     }
+
+    @Override
+    public Integer registerUser(User user) {
+        return userMapper.registerUser(user);
+    }
 }

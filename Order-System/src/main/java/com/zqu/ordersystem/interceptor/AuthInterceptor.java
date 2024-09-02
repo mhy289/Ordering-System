@@ -25,9 +25,11 @@ public class AuthInterceptor implements HandlerInterceptor {
         if ("options".equalsIgnoreCase(method)) {
             return true;
         }
-
         String token = request.getHeader("Authorization");
-        if(!JwtUtils.verifyToken(token) || token == null || token.isEmpty()){
+        if(token == null){
+            throw new BusinessException(ExceptionType.BUS_INVALID_TOKEN, "Invalid authorization");
+        }
+        if(!JwtUtils.verifyToken(token) || token.isEmpty()){
             throw new BusinessException(ExceptionType.BUS_INVALID_TOKEN, "Invalid authorization");
         } else {
             log.info("token");

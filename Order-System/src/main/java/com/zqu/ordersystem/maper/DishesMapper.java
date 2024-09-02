@@ -17,7 +17,7 @@ public interface DishesMapper {
     public Dishes getDishesById(Integer id);
 
     //添加新菜品
-    @Insert("insert into dishes values(null, #{DishesName}, #{price}, #{description}, #{recommend}, #{imgUrl}, #{status}, #{categoryId})")
+    @Insert("insert into dishes values(null, #{dishesName}, #{price}, #{sales}, #{description}, #{recommend}, #{imgUrl}, #{status}, #{categoryId})")
     public Integer addDishes(Dishes dishes);
 
     //修改菜品

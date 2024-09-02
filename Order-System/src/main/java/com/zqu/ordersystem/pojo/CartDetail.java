@@ -7,17 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderDetail {
-    //订单详情
+public class CartDetail {
     private Integer id;
-    // 所属订单
-    private Integer orderId;
-    // 所属商品
+    private Integer cartId;
     private Integer dishesId;
-    //菜品数量
     private Integer dishesCount;
-
-    private Order order;
-
+    private Carts cart;
     private Dishes dishes;
 }

@@ -95,4 +95,27 @@ public class UserController {
         result.setMsg("登陆成功");
         return result;
     }
+
+    //用户注册
+    @PostMapping("/register")
+    public Result register(@RequestBody User user) {
+        Result result = new Result();
+        User addDb = userService.login(user);
+        if (addDb!= null) {
+            result.setCode(500);
+            result.setMsg("该用户名已存在");
+            return result;
+        }
+        Integer add = userService.registerUser(user);
+        if (add == 0) {
+            result.setCode(500);
+            result.setMsg("注册失败");
+            return result;
+        }
+//        String token = JwtUtils.createToken(addDb.getId().toString(), addDb.getUsername());
+//        result.setData(token);
+        result.setCode(200);
+        result.setMsg("注册成功");
+        return result;
+    }
 }
