@@ -34,6 +34,16 @@ public class DishesController {
         return new Result(dishes,"查询成功",200);
     }
 
+    //按条件查询
+    @PostMapping("/dishes/recommend/{recommend}/status/{status}")
+    public Result getRecommendAndStatus(@PathVariable Integer recommend, @PathVariable Integer status, @RequestBody Dishes dishes) {
+        log.debug("dishes is {}" ,dishes);
+        dishes.setRecommend(recommend);
+        dishes.setStatus(status);
+        List<Dishes> dishesList = dishesService.queryDishByCondition(dishes);
+        return new Result(dishesList,"查询成功",200);
+    }
+
     //分页获取
     @GetMapping("/dishes/current/{current}/size/{size}")
     public Result getAllPage(@PathVariable Integer current, @PathVariable Integer size) {

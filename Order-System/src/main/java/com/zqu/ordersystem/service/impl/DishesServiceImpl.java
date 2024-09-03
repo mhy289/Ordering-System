@@ -87,4 +87,9 @@ public class DishesServiceImpl implements DishesService {
     public List<Dishes> queryDishByName(String dishesName) {
         return dishesMapper.queryByName(dishesName);
     }
+
+    @Override
+    public List<Dishes> queryDishByCondition(Dishes dishes) {
+        return dishesMapper.selectByCondition(dishes);
+    }
 }

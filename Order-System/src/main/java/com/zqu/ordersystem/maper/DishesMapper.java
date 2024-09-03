@@ -29,7 +29,7 @@ public interface DishesMapper {
     public Integer deleteDishes(Integer id);
 
     // 按条件查询菜品
-    @Select("select * from dishes where id = #{id} and dishes_name like '%${dishesName}%' and category_id = #{categoryId}")
+    @Select("select * from dishes where recommend = #{recommend} and dishes_name like '%${dishesName}%' and status = #{status}")
     List<Dishes> selectByCondition(Dishes dishes);
 
     @Select("select * from dishes where recommend = #{cod} and category_id = #{index}")

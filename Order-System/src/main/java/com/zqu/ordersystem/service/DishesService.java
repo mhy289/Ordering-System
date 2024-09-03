@@ -36,4 +36,6 @@ public interface DishesService {
     List<Dishes> queryByCod(Integer cod, Integer index);
 
     List<Dishes> queryDishByName(String dishesName);
+
+    List<Dishes> queryDishByCondition(Dishes dishes);
 }
