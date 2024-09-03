@@ -296,8 +296,18 @@
       goToPerson() {
         this.$router.push('/Person')
       },
-      paycartToOrder() {
-
+      async paycartToOrder() {
+        let res = await this.$http.post('/order/addCart')
+        if (res.code == 200) {
+            this.$message.success("提交订单成功")
+            //清空购物车
+            this.cart = []
+          //this.$router.push('/Person')
+          this.totalPrice = 0
+          this.isCartVisible = !this.isCartVisible;
+        } else {
+            this.$message.error("提交订单失败")
+        }
       },
       async getAllCount() {
         let res = await this.$http.get('/cart/total')

@@ -22,7 +22,6 @@ axios.defaults.baseURL = "http://localhost:8080"
 axios.interceptors.response.use(function (resp) {
   let data = resp.data
   if (data.code === 444) {
-
     // 跳转到登录页
     //Message.error("请先登录2")
     console.log("login_null")
