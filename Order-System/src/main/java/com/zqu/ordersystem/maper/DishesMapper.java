@@ -17,11 +17,11 @@ public interface DishesMapper {
     public Dishes getDishesById(Integer id);
 
     //添加新菜品
-    @Insert("insert into dishes values(null, #{dishesName}, #{price}, #{sales}, #{description}, #{recommend}, #{imgUrl}, #{status}, #{categoryId})")
+    @Insert("insert into dishes values(null, #{dishesName}, #{price}, 0, #{description}, #{recommend}, #{imgUrl}, #{status}, #{categoryId})")
     public Integer addDishes(Dishes dishes);
 
     //修改菜品
-    @Update("update dishes set dishes_name = #{dishesName}, price = #{price}, description = #{description}, recommend = #{recommend}, img_url = #{imgUrl}, status = #{status}, category_id = #{categoryId} where id = #{id}")
+    @Update("update dishes set dishes_name = #{dishesName}, price = #{price}, sales = #{sales}, description = #{description}, recommend = #{recommend}, img_url = #{imgUrl}, status = #{status}, category_id = #{categoryId} where id = #{id}")
     public Integer updateDishes(Dishes dishes);
 
     //删除菜品

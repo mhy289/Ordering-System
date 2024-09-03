@@ -3,10 +3,8 @@ package com.zqu.ordersystem.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.zqu.ordersystem.maper.OrderMapper;
-import com.zqu.ordersystem.pojo.CartDetail;
-import com.zqu.ordersystem.pojo.Order;
-import com.zqu.ordersystem.pojo.PageItem;
-import com.zqu.ordersystem.pojo.User;
+import com.zqu.ordersystem.pojo.*;
+import com.zqu.ordersystem.service.DishesService;
 import com.zqu.ordersystem.service.OrderDetailService;
 import com.zqu.ordersystem.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +23,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     OrderDetailService orderDetailService;
+
+    @Autowired
+    DishesService dishService;
 
     @Override
     public List<Order> queryAllOrder() {
@@ -82,6 +83,14 @@ public class OrderServiceImpl implements OrderService {
         orderMapper.addOrder(order);
         //order.setId();
         for(CartDetail cartDetail : cartDetailList){
+            log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Dishes dishes = dishService.queryDishById(cartDetail.getDishesId());
+            dishes.setSales(dishes.getSales() + cartDetail.getDishesCount());
+            log.debug("(dishes.getSales() is {} cartDetail.getDishesCount() is {}", dishes.getSales(), cartDetail.getDishesCount());
+            Integer i = dishService.updateDish(dishes);
+            if(i == null || i <= 0){
+                throw new RuntimeException("添加销量失败");
+            }
             totalPrice += (cartDetail.getDishesCount()*cartDetail.getDishes().getPrice());
             orderDetailService.addOrderByOrder(order, cartDetail);
         }
