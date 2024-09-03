@@ -21,7 +21,7 @@ public interface DishesMapper {
     public Integer addDishes(Dishes dishes);
 
     //修改菜品
-    @Update("update dishes set dishes_name = #{dishesName}, price = #{price}, description = #{description}, recommend = #{recommend}, img_url = #{imgUrl}, status = #{status}, category_id = #{ccategoryId} where id = #{id}")
+    @Update("update dishes set dishes_name = #{dishesName}, price = #{price}, description = #{description}, recommend = #{recommend}, img_url = #{imgUrl}, status = #{status}, category_id = #{categoryId} where id = #{id}")
     public Integer updateDishes(Dishes dishes);
 
     //删除菜品
@@ -34,4 +34,7 @@ public interface DishesMapper {
 
     @Select("select * from dishes where recommend = #{cod} and category_id = #{index}")
     List<Dishes> queryByCod(Integer cod, Integer index);
+
+    @Select("select * from dishes where dishes_name like concat('%', #{dishesName}, '%')")
+    List<Dishes> queryByName(String dishesName);
 }

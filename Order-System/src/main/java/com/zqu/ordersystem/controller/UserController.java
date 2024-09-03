@@ -38,6 +38,7 @@ public class UserController {
     // 条件分页查询
     @PostMapping("/users/current/{current}/size/{size}")
     public Result getConditionPage(@PathVariable Integer current, @PathVariable Integer size, @RequestBody User user) {
+        log.debug("user is {}", user);
         return new Result(userService.queryConditionPage(user, current, size), "查询成功", 200);
     }
 

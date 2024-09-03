@@ -2,9 +2,15 @@ package com.zqu.ordersystem.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.zqu.ordersystem.maper.DishesMapper;
 import com.zqu.ordersystem.maper.OrderDetailMapper;
+import com.zqu.ordersystem.maper.OrderMapper;
+import com.zqu.ordersystem.maper.UserMapper;
 import com.zqu.ordersystem.pojo.*;
+import com.zqu.ordersystem.service.DishesService;
 import com.zqu.ordersystem.service.OrderDetailService;
+import com.zqu.ordersystem.service.OrderService;
+import com.zqu.ordersystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +21,15 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 
     @Autowired
     OrderDetailMapper orderDetailMapper;
+
+    @Autowired
+    OrderMapper orderMapper;
+
+    @Autowired
+    DishesMapper dishesMapper;
+
+    @Autowired
+    UserMapper userMapper;
 
     @Override
     public List<OrderDetail> queryAllOrder() {
@@ -30,6 +45,13 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     public PageItem<OrderDetail> queryPage(Integer current, Integer size) {
         PageHelper.startPage(current, size);
         List<OrderDetail> orderDetailList = orderDetailMapper.selectAllOrders();
+        for (OrderDetail orderDetail : orderDetailList) {
+            User user = userMapper.getUserById(orderMapper.selectOrderById(orderDetail.getOrderId()).getUserId());
+            Order order = orderMapper.selectOrderById(orderDetail.getOrderId());
+            order.setUser(user);
+            orderDetail.setOrder(order);
+            orderDetail.setDishes(dishesMapper.getDishesById(orderDetail.getDishesId()));
+        }
         long total = ((Page<OrderDetail>) orderDetailList).getTotal();
         return new PageItem<>(total, orderDetailList);
     }
