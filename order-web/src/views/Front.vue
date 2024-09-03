@@ -113,6 +113,11 @@
             </div>
           </div>
 
+          <el-dialog title="扫码支付" :visible.sync="visible" width="400px" center :close-on-click-modal="false"
+            :close-on-press-escape="false" @close="handleClose">
+            <img src="../assets/img/qr-code.jpg" alt="二维码" class="qr-code-image" />
+          </el-dialog>
+
           <!-- 黑框区域 -->
           <div class="food-display-container">
             <el-main class="food-display">
@@ -140,6 +145,8 @@
 </template>
 
 <script>
+  import router from '@/router';
+
   export default {
     data() {
       return {
@@ -154,7 +161,8 @@
         isLoggedIn: false, // 假设已登录
         isPerson: false,
         username: '',
-        totalPrice: 0
+        totalPrice: 0,
+        visible: false
       };
     },
     beforeMount() {
@@ -292,6 +300,8 @@
       },
       payOrder() {
         // 支付订单逻辑
+        //router.push('/QRCodeModal')
+        this.visible = true;
       },
       goToPerson() {
         this.$router.push('/Person')
@@ -299,14 +309,14 @@
       async paycartToOrder() {
         let res = await this.$http.post('/order/addCart')
         if (res.code == 200) {
-            this.$message.success("提交订单成功")
-            //清空购物车
-            this.cart = []
+          this.$message.success("提交订单成功")
+          //清空购物车
+          this.cart = []
           //this.$router.push('/Person')
           this.totalPrice = 0
           this.isCartVisible = !this.isCartVisible;
         } else {
-            this.$message.error("提交订单失败")
+          this.$message.error("提交订单失败")
         }
       },
       async getAllCount() {
@@ -539,5 +549,11 @@
     background-color: #e9eaec;
     /* 背景 */
   }
+  .qr-code-image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
 
 </style>

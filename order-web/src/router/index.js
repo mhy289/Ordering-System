@@ -102,6 +102,11 @@ const routes = [{
   component: Person
 },
 {
+    path: '/QRCodeModal',
+    name: 'QRCodeModal',
+    component: () => import('@/views/QRCodeModal.vue')
+},
+{
   path: '/about',
   name: 'about',
   // route level code-splitting
