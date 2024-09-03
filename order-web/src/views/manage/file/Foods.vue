@@ -1,13 +1,11 @@
-<!--
- * 食品管理
- * 其他功能如搜索
--->
 <template>
   <div>
+    <!-- 搜索和功能按钮区域 -->
     <div style="padding: 5px 0">
       <el-input
         v-model="searchText"
         @keyup.enter.native="load"
+        placeholder="搜索食品"
         style="width: 200px"
       >
         <i
@@ -27,76 +25,62 @@
         style="margin: 5px"
       >重置</el-button>
       <el-button
-        @click="add"
+        @click="showAddDialog"
         round
         type="success"
         style="margin: 5px"
-      >新增</el-button>
+      >新增食品</el-button>
     </div>
 
+    <!-- 食品数据表格 -->
     <el-table
       :data="tableData"
       stripe
       border
-      fixed
       style="width: 100%"
     >
       <el-table-column
         prop="id"
-        label="商品id"
+        label="食品ID"
         width="80px"
       ></el-table-column>
 
       <el-table-column
-        prop="name"
-        label="商品名称"
+        prop="dishname"
+        label="食品名称"
       ></el-table-column>
 
       <el-table-column
-        label="商品图片"
+        label="食品图片"
         width="120px"
       >
         <template slot-scope="scope">
           <img
             :src="baseApi + scope.row.imgs"
-            style="width: 90px;height: 80px"
+            style="width: 90px; height: 80px;"
           >
         </template>
       </el-table-column>
 
       <el-table-column
         prop="description"
-        label="商品描述"
+        label="食品描述"
       ></el-table-column>
 
       <el-table-column
-        prop="discount"
-        label="折扣"
+        prop="price"
+        label="价格"
       ></el-table-column>
 
       <el-table-column
-        prop="sales"
-        label="销量"
+        prop="categoryId"
+        label="分类"
       ></el-table-column>
 
       <el-table-column
-        prop="saleMoney"
-        label="销售额（元)"
-      ></el-table-column>
-
-      <el-table-column
-        prop="createTime"
-        label="创建时间"
-      >
-        <template slot-scope="scope">
-          {{scope.row.createTime.replace(" ","&nbsp;&nbsp;")}}
-        </template>
-
-      </el-table-column>
-
-      <el-table-column
+        prop="recommend"
         label="推荐"
-        width="150"
+        width="150px"
       >
         <template slot-scope="scope">
           <el-switch
@@ -112,7 +96,7 @@
       <el-table-column
         fixed="right"
         label="操作"
-        width="200"
+        width="200px"
       >
         <template slot-scope="scope">
           <el-button
@@ -123,90 +107,90 @@
           ></el-button>
           <el-popconfirm
             @confirm="del(scope.row.id)"
-            title="确定删除？"
+            title="确定删除该食品吗？"
           >
             <el-button
               type="danger"
               icon="el-icon-delete"
               circle
               slot="reference"
-              style="margin-left: 10px"
+              style="margin-left: 10px;"
             ></el-button>
           </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
 
-    <!--  分页控件  -->
-    <div style="margin-top: 10px">
+    <!-- 分页控件 -->
+    <div style="margin-top: 10px;">
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="pageNum"
         :page-size="pageSize"
-        :page-sizes="[3, 5, 8, 10]"
+        :page-sizes="[5, 10, 20, 50]"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
-      >
-      </el-pagination>
+      ></el-pagination>
     </div>
 
-    <!--新增商品弹窗-->
+    <!-- 新增食品弹窗 -->
     <el-dialog
-      title="信息"
+      title="新增食品"
       :visible.sync="dialogFormVisible"
-      width="30%"
+      width="40%"
       :close-on-click-modal="false"
     >
       <el-form :model="entity">
-
         <el-form-item
-          label="商品名称"
-          label-width="150px"
+          label="食品名称"
+          label-width="120px"
         >
           <el-input
-            v-model="entity.name"
+            v-model="entity.dishname"
             autocomplete="off"
-            style="width: 80%"
+            style="width: 100%;"
           ></el-input>
         </el-form-item>
 
         <el-form-item
-          label="商品描述"
-          label-width="150px"
+          label="食品描述"
+          label-width="120px"
         >
           <el-input
             v-model="entity.description"
             autocomplete="off"
-            style="width: 80%"
+            type="textarea"
+            style="width: 100%;"
           ></el-input>
         </el-form-item>
 
         <el-form-item
-          label="折扣"
-          label-width="150px"
+          label="价格"
+          label-width="120px"
         >
           <el-input
-            v-model="entity.discount"
+            v-model="entity.price"
+            type="number"
             autocomplete="off"
-            style="width: 80%"
+            style="width: 100%;"
           ></el-input>
         </el-form-item>
 
         <el-form-item
-          label="分类id"
-          label-width="150px"
+          label="分类ID"
+          label-width="120px"
         >
           <el-input
             v-model="entity.categoryId"
             autocomplete="off"
-            style="width: 80%"
+            style="width: 100%;"
           ></el-input>
         </el-form-item>
 
         <el-form-item
-          label="商品图片"
-          label-width="150px"
+          label="食品图片"
+          label-width="120px"
         >
           <el-upload
             class="upload-demo"
@@ -214,7 +198,7 @@
             :action="baseApi + '/file/upload'"
             :file-list="fileList"
             :on-change="handleChange"
-            :limit="2"
+            :limit="1"
             :on-success="handleImgSuccess"
             :auto-upload="false"
           >
@@ -226,167 +210,141 @@
             <div
               slot="tip"
               class="el-upload__tip"
-            >只能上传jpg/png文件，且不超过500kb</div>
+            >
+              只能上传jpg/png文件，且不超过500kb
+            </div>
           </el-upload>
         </el-form-item>
-
       </el-form>
 
       <div
         slot="footer"
         class="dialog-footer"
       >
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button @click="dialogFormVisible = false">取消</el-button>
         <el-button
           type="primary"
           @click="save"
-        >确 定</el-button>
+        >确定</el-button>
       </div>
-
     </el-dialog>
   </div>
 </template>
 
 <script>
-import API from '../../../utils/request'
-const url = "/api/good/"
+import axios from 'axios';
+
+const url = "/api/good/";
 
 export default {
-  name: "Goods",
-  //页面初始化数据
+  name: "Foods",
   data () {
     return {
-      baseApi: this.$store.state.baseApi,
+      //baseApi: this.$store.state.baseApi,
       fileList: [],
-      options: [],
       searchText: '',
-      user: {},
       tableData: [],
       pageNum: 1,
-      pageSize: 5,
+      pageSize: 10,
       entity: {},
       total: 0,
-      dialogFormVisible: false
+      dialogFormVisible: false,
     };
   },
-  //页面加载完成
   created () {
-    this.user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {}
-    this.load()
-
+    this.load();
   },
-  //方法
   methods: {
-    //页面变化
     handleSizeChange (pageSize) {
-      this.pageSize = pageSize
-      this.load()
+      this.pageSize = pageSize;
+      this.load();
     },
-    //翻页
     handleCurrentChange (pageNum) {
-      this.pageNum = pageNum
-      this.load()
+      this.pageNum = pageNum;
+      this.load();
     },
-    //修改商品推荐
-    handleRecommend (good) {
-      API.get(url + "recommend", {
+    handleRecommend (food) {
+      axios.get(url + "recommend", {
         params: {
-          id: good.id,
-          isRecommend: good.recommend,
+          id: food.id,
+          isRecommend: food.recommend,
         }
       }).then(res => {
-        if (res.code === '200') {
-          this.$message.success("修改成功")
+        if (res.data.code === '200') {
+          this.$message.success("修改成功");
         } else {
-          this.$message.error(res.msg)
+          this.$message.error(res.data.msg);
         }
-      })
+      });
     },
-    //页面加载
     load () {
-      API.get(url + "fullPage", {
+      axios.get(url + "fullPage", {
         params: {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
           searchText: this.searchText
         }
       }).then(res => {
-        this.tableData = res.data.records
-        this.total = res.data.total
-      })
+        this.tableData = res.data.records;
+        this.total = res.data.total;
+      });
     },
-    //重置搜索
     reset () {
-      this.searchText = '';
-      this.load()
+      //this.searchText = '';
+      this.load();
     },
-    //新增
-    add () {
-      this.$router.push("goodInfo")
+    showAddDialog () {
+      this.entity = {};
+      this.dialogFormVisible = true;
     },
-    //编辑
-    edit (obj) {
-      this.entity = JSON.parse(JSON.stringify(obj))
-      this.$router.push({ name: 'goodInfo', query: { good: JSON.stringify(this.entity) } })
+    edit (food) {
+      this.entity = JSON.parse(JSON.stringify(food));
+      this.dialogFormVisible = true;
     },
-    //图片上传成功
     handleImgSuccess (res) {
       this.entity.imgs = res.data;
-      API.post(url, this.entity).then(res2 => {
-        if (res2.code === '200') {
-          this.$message({
-            type: "success",
-            message: "操作成功"
-          })
-        } else {
-          this.$message({
-            type: "error",
-            message: res2.msg
-          })
-        }
-        this.load()
-        this.dialogFormVisible = false
-      })
+      this.save();
     },
-    //保存商品
     save () {
-      //上传图片
       if (this.fileList.length !== 0) {
         this.$refs.upload.submit();
       } else {
-        //不上传图片
-        API.post(url, this.entity).then(res2 => {
-          if (res2.code === '200') {
+        axios.post(url, this.entity).then(res => {
+          if (res.data.code === '200') {
             this.$message({
               type: "success",
               message: "操作成功"
-            })
+            });
+            this.dialogFormVisible = false;
+            this.load();
           } else {
             this.$message({
               type: "error",
-              message: res2.msg
-            })
+              message: res.data.msg
+            });
           }
-          this.load()
-          this.dialogFormVisible = false
-        })
+        });
       }
     },
-    //删除商品
     del (id) {
-      API.delete(url + id).then(res => {
-        this.$message({
-          type: "success",
-          message: "操作成功"
-        })
-        this.load()
-      })
+      axios.delete(url + id).then(res => {
+        if (res.data.code === '200') {
+          this.$message({
+            type: "success",
+            message: "删除成功"
+          });
+          this.load();
+        } else {
+          this.$message({
+            type: "error",
+            message: res.data.msg
+          });
+        }
+      });
     },
     handleChange (file, fileList) {
-      this.fileList = fileList.slice(-3);
-    },
-
+      this.fileList = fileList.slice(-1);
+    }
   }
-
 };
 </script>

@@ -88,7 +88,7 @@ export default {
   data () {
     return {
       routePath: '',
-      baseApi: this.$store.state.baseApi,
+      //baseApi: this.$store.state.baseApi,
     }
   },
   watch: {

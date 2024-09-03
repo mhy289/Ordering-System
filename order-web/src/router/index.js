@@ -6,6 +6,7 @@ import Front from '../views/Front.vue'
 import test123 from '@/views/test123.vue'
 import Login from '@/views/Login.vue'
 import User from '@/views/User.vue'
+import Foods from '@/views/manage/file/Foods.vue'
 import FoodInfo from '@/views/manage/file/FoodInfo.vue'
 import Register from '@/views/Register.vue'
 import Manage from '../views/manage/Manage.vue'
@@ -45,6 +46,11 @@ const routes = [{
 
   },
   {
+    path: 'Foods',
+    name: 'Foods',
+    component: Foods
+  },
+  {
     path: 'FoodInfo',
     name: 'FoodInfo',
     component: FoodInfo
@@ -57,11 +63,6 @@ const routes = [{
   path: '/test123',
   name: 'test123',
   component: test123
-},
-{
-  path: '/login',
-  name: 'Login',
-  component: Login
 },
 {
   path: '/user',
