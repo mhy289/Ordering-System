@@ -25,8 +25,8 @@ axios.interceptors.response.use(function (resp) {
 
     // 跳转到登录页
     //Message.error("请先登录2")
-
-    router.push("/login")
+    console.log("login_null")
+    //router.push("/login")
   }
   return data
 })

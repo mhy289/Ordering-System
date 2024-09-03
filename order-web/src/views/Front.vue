@@ -153,6 +153,7 @@
       };
     },
     beforeMount() {
+
       //this.queryAllfoods();
       this.handleSelect('recommend', 1)
 
@@ -234,7 +235,7 @@
         this.isPerson = false;
         this.username = '';
         this.$router.push({
-          name: 'Front'
+          name: 'Login'
         });
         //刷新页面
         //window.location.reload();
