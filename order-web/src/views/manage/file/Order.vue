@@ -45,7 +45,7 @@
       <el-table :data="detail" background-color="black">
         <el-table-column label="图片" width="150">
           <template slot-scope="scope">
-            <img :src="baseApi + scope.row.img" min-width="100" height="100" />
+            <img :src="scope.row.img" min-width="100" height="100" />
           </template>
         </el-table-column>
 

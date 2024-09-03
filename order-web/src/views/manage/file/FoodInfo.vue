@@ -80,7 +80,7 @@
         <el-upload
           class="upload-demo"
           ref="upload"
-          :action="baseApi + '/file/upload'"
+          :action="'/file/upload'"
           :file-list="fileList"
           :on-change="handleChange"
           :limit="1"

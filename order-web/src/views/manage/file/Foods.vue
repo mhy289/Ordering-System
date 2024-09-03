@@ -17,7 +17,7 @@
 
       <el-table-column label="食品图片" width="120px">
         <template slot-scope="scope">
-          <img :src="baseApi + scope.row.imgs" style="width: 90px; height: 80px;">
+          <img :src="scope.row.imgs" style="width: 90px; height: 80px;">
         </template>
       </el-table-column>
 
@@ -257,6 +257,7 @@
       },
       // 删除图片
       imageRemove() {
+        //let 
         this.imgUrl = ''
         this.$message({
           message: '删除图片成功',
@@ -312,7 +313,6 @@
         } else {
           this.$message.error("修改失败");
         }
-        }
       },
       async del(id) {
         console.log(id)
@@ -330,9 +330,11 @@
           });
         }
       },
-      handleChange(file, fileList) {
-        this.fileList = fileList.slice(-1);
-      }
+    },
+
+    handleChange(file, fileList) {
+      this.fileList = fileList.slice(-1);
+    }
   };
 
 </script>

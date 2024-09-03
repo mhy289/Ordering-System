@@ -36,7 +36,7 @@
       <span class="el-dropdown-link">
         <div style="display: inline-block">
           <img
-            :src="baseApi + user.avatarUrl"
+            :src=" user.avatarUrl"
             class="avatar"
           >
           {{user.nickname }}

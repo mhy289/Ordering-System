@@ -9,7 +9,7 @@
       <el-form-item label="头像">
         <el-upload class="avatar-uploader" :action="'/avatar'" :headers="headers" :show-file-list="false"
           :on-success="handleAvatarSuccess" :on-error="handleAvatarError">
-          <img v-if="form.avatarUrl" :src="baseApi + form.avatarUrl" class="avatar">
+          <img v-if="form.avatarUrl" :src="form.avatarUrl" class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
       </el-form-item>
