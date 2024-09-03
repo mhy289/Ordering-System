@@ -9,12 +9,14 @@ import com.zqu.ordersystem.pojo.Dishes;
 import com.zqu.ordersystem.pojo.Order;
 import com.zqu.ordersystem.pojo.PageItem;
 import com.zqu.ordersystem.service.DishesService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Slf4j
 public class DishesServiceImpl implements DishesService {
 
     @Autowired
@@ -41,7 +43,15 @@ public class DishesServiceImpl implements DishesService {
 
     @Override
     public Integer updateDish(Dishes dishes) {
-        return dishesMapper.updateDishes(dishes);
+        log.debug("dishes is {}", dishes);
+        Integer i = dishesMapper.updateDishes(dishes);
+        if (i == 0){
+            throw new BusinessException(ExceptionType.DISH_UPDATE_FALSE,"修改菜品失败");
+        } else {
+            log.info("修改菜品成功");
+            return i;
+        }
+        //return dishesMapper.updateDishes(dishes);
     }
 
     @Override
@@ -58,10 +68,12 @@ public class DishesServiceImpl implements DishesService {
     }
 
     @Override
-    public PageItem<Dishes> queryConditionPage(Dishes dishes, Integer current, Integer size) {
+    public PageItem<Dishes> queryConditionPage (Dishes dishes, Integer current, Integer size) {
         PageHelper.startPage(current, size);
-        List<Dishes> dishesList = dishesMapper.selectByCondition(dishes);
+        List<Dishes> dishesList = dishesMapper.queryByName(dishes.getDishesName());
+        log.debug("dishesList is {}",dishesList);
         Page<Dishes> info = (Page<Dishes>) dishesList;
+        log.debug("info is {}",info);
         long total = info.getTotal();
         return new PageItem<>(total, dishesList);
     }
@@ -69,5 +81,10 @@ public class DishesServiceImpl implements DishesService {
     @Override
     public List<Dishes> queryByCod(Integer cod, Integer index) {
         return dishesMapper.queryByCod(cod, index);
+    }
+
+    @Override
+    public List<Dishes> queryDishByName(String dishesName) {
+        return dishesMapper.queryByName(dishesName);
     }
 }

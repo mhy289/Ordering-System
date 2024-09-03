@@ -21,12 +21,12 @@ axios.defaults.baseURL = "http://localhost:8080"
 // 定义响应拦截器
 axios.interceptors.response.use(function (resp) {
   let data = resp.data
-  if (data.status === 444) {
+  if (data.code === 444) {
 
     // 跳转到登录页
-    Message.error("请先登录2")
-
-    router.push("/login")
+    //Message.error("请先登录2")
+    console.log("login_null")
+    //router.push("/login")
   }
   return data
 })

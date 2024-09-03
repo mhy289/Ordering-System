@@ -25,4 +25,17 @@ class DishesMapperTest {
             System.out.println(dst);
         }
     }
+
+    @Test
+    void updateDishes() {
+        Dishes dishes = new Dishes();
+        dishes.setId(7);
+        dishes.setDishesName("test_update");
+        dishes.setCategoryId(2);
+        dishesMapper.updateDishes(dishes);
+        List<Dishes> allDishes = dishesMapper.getAllDishes();
+        for (Dishes dst : allDishes) {
+            System.out.println(dst);
+        }
+    }
 }

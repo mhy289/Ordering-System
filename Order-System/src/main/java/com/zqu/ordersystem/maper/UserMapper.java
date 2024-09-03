@@ -32,7 +32,7 @@ public interface UserMapper {
     public Integer deleteUser(Integer id);
 
     // 按条件查询用户
-    @Select("select * from users where admin = #{admin} and phone like '%${phone}%' and sex = #{sex}")
+    @Select("select * from users where username like concat('%', #{username}, '%')")
     List<User> selectByCondition(User user);
 
     // 注册一个用户

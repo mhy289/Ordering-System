@@ -18,6 +18,8 @@ public class DishesController {
     @Autowired
     private DishesService dishesService;
 
+
+
     // 获取所有菜品
     @GetMapping("/dishes")
     public Result getAllDishes() {
@@ -41,6 +43,9 @@ public class DishesController {
     // 条件分页查询
     @PostMapping("/dishes/current/{current}/size/{size}")
     public Result getConditionPage(@PathVariable Integer current, @PathVariable Integer size, @RequestBody Dishes dishes) {
+        log.debug("dishesName is {}", dishes.getDishesName());
+        List<Dishes> dishesList = dishesService.queryDishByName(dishes.getDishesName());
+        log.debug("dishesList is {}",dishesList);
         return new Result(dishesService.queryConditionPage(dishes, current, size), "查询成功", 200);
     }
 
