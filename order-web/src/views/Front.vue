@@ -9,7 +9,7 @@
           <el-button type="success" @click="LoginOut" class="login-button" v-if="isPerson">退出登录</el-button>
           <el-button type="success" @click="goToPerson" class="login-button"
             v-if="isPerson">{{this.username}}</el-button>
-          <el-button @click="goToAdmin">后台管理</el-button>
+          <el-button v-if="isAdmin" @click="goToAdmin">后台管理</el-button>
         </div>
       </div>
     </el-header>
@@ -147,6 +147,7 @@
         isCartVisible: false,
         isLoggedIn: false, // 假设已登录
         isPerson: false,
+        isAdmin: false,
         username: '',
         totalPrice: 0
       };
@@ -158,6 +159,7 @@
     },
     mounted() {
       this.isLogged();
+      this.isAdm();
     },
     methods: {
       async queryAllfoods() {
@@ -211,6 +213,18 @@
           }
         } else {
           this.$message.error("请先登录")
+        }
+      },
+      async isAdm() {
+        let res = await this.$http.get('/role')
+        if (res.code == 200) {
+          if (res.data == 1) {
+            this.isAdmin = true
+          } else {
+            this.isAdmin = false
+          }
+        } else {
+          this.$message.error("获取角色信息失败")
         }
       },
       LoginOut() {
@@ -301,7 +315,7 @@
           this.$message.error("计算失败")
         }
       },
-      async cartClr(){
+      async cartClr() {
         let res = await this.$http.delete('/cart/clear')
         if (res.code == 200) {
           this.$message.success("清空购物车成功")
