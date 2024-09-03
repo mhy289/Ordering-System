@@ -1,18 +1,12 @@
-<!--
- * 后台订单管理页面
- *
- * @Author: ShanZhu
- * @Date: 2023-11-11
--->
 <template>
   <div>
     <div>
 
-      <el-select v-model="searchMode" placeholder="请选择订单类型" style="width: 150px;margin-right: 10px">
+      <!-- <el-select v-model="searchMode" placeholder="请选择订单类型" style="width: 150px;margin-right: 10px">
         <el-option value="已支付" label="已支付"></el-option>
         <el-option value="已发货" label="已发货"></el-option>
         <el-option value="已收货" label="已收货"></el-option>
-      </el-select>
+      </el-select> -->
 
       <el-input v-model="searchText" @keyup.enter.native="load" style="width: 200px">
         <i slot="prefix" class="el-input__icon el-icon-search"></i></el-input>
@@ -24,17 +18,17 @@
     <el-table :data="tableData" border stripe fixed style="width: 100%">
       <el-table-column prop="id" label="ID" width="50" sortable> </el-table-column>
       <el-table-column prop="orderId" label="订单编号" width="100"></el-table-column>
-      <el-table-column prop="totalPrice" label="总价" width="100"></el-table-column>
-      <el-table-column prop="userId" label="下单人id" width="100"></el-table-column>
-      <el-table-column prop="orderTime" label="下单时间" width="100"></el-table-column>
-      <el-table-column fixed="right" label="操作" width="200">
+      <el-table-column prop="order.totalPrice" label="总价" width="100"></el-table-column>
+      <el-table-column prop="order.userId" label="下单人id" width="100"></el-table-column>
+      <el-table-column prop="order.orderTime" label="下单时间" width="100"></el-table-column>
+      <!-- <el-table-column fixed="right" label="操作" width="200">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="showDetail(scope.row)">详情</el-button>
           <el-popconfirm @confirm="delivery(scope.row)" title="确定发货吗？" v-if="scope.row.state==='已支付'">
             <el-button type="primary" size="mini" slot="reference" style="margin-left: 10px">发货</el-button>
           </el-popconfirm>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
     </el-table>
 
@@ -98,7 +92,7 @@
         total: 0,
         dialogFormVisible: false,
         detail: [],
-        baseApi: this.$store.state.baseApi,
+        //baseApi: this.$store.state.baseApi,
       };
     },
     //页面加载完成
@@ -122,7 +116,9 @@
       },
       //页面加载
       async load() {
-        let res = await this.$http.get('/users/current/'+ this.pageNum +'/size/' + this.pageSize)
+        //console.log(this)
+        let res = await this.$http.get('/orderDetails/current/'+ this.pageNum +'/size/' + this.pageSize)
+        console.log(res)
         if (res.code == 200) {
             this.tableData = res.data.list
             this.total = res.data.total
@@ -143,22 +139,22 @@
       },
       //展示详情弹出
       showDetail(row) {
-        this.request.get("/api/order/orderNo/" + row.orderNo).then(res => {
+        /* this.request.get("/api/order/orderNo/" + row.orderNo).then(res => {
           if (res.code === '200') {
             this.detail = [];
             this.detail.push(res.data);
             this.dialogFormVisible = true;
           }
-        })
+        }) */
       },
       //订单发货
       delivery(order) {
-        this.request.get("/api/order/delivery/" + order.orderNo).then(res => {
+        /* this.request.get("/api/order/delivery/" + order.orderNo).then(res => {
           if (res.code === '200') {
             this.$message.success("成功发货");
             order.state = '已发货'
           }
-        })
+        }) */
       },
 
     },
