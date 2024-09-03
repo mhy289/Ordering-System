@@ -11,6 +11,7 @@ import Foods from '@/views/manage/file/Foods.vue'
 import FoodInfo from '@/views/manage/file/FoodInfo.vue'
 import Register from '@/views/Register.vue'
 import Manage from '../views/manage/Manage.vue'
+import Order from '@/views/manage/file/Order.vue'
 import {
   Message
 } from 'element-ui';
@@ -61,6 +62,11 @@ const routes = [{
     name: 'User',
     component: User
   },
+  {
+    path: 'Order',
+    name: 'Order',
+    component: Order
+  }
     //{path: 'user', name: 'user', meta: {title:'用户管理',path: '系统管理/用户管理',requireAuth: true}, component: () => import('../views/manage/User.vue'),},
   ]
 

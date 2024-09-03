@@ -23,34 +23,14 @@
 
     <el-table :data="tableData" border stripe fixed style="width: 100%">
       <el-table-column prop="id" label="ID" width="50" sortable> </el-table-column>
-      <el-table-column prop="orderNo" label="订单编号" width="200"></el-table-column>
+      <el-table-column prop="orderId" label="订单编号" width="100"></el-table-column>
       <el-table-column prop="totalPrice" label="总价" width="100"></el-table-column>
       <el-table-column prop="userId" label="下单人id" width="100"></el-table-column>
-      <el-table-column prop="linkUser" label="联系人" width="150"></el-table-column>
-      <el-table-column prop="linkPhone" label="联系电话"></el-table-column>
-      <el-table-column prop="linkAddress" label="送货地址" width="300"></el-table-column>
-
-      <el-table-column prop="state" label="状态" width="100">
+      <el-table-column prop="orderTime" label="下单时间" width="100"></el-table-column>
+      <el-table-column fixed="right" label="操作" width="200">
         <template slot-scope="scope">
-          <el-tag type="success" v-if="scope.row.state==='已支付'">{{scope.row.state}}</el-tag>
-          <el-tag type="primary" v-if="scope.row.state==='已发货'">{{scope.row.state}}</el-tag>
-          <el-tag type="info" v-if="scope.row.state==='已收货'">{{scope.row.state}}</el-tag>
-        </template>
-      </el-table-column>
-
-      <el-table-column prop="createTime" label="下单时间"></el-table-column>
-
-      <el-table-column
-          fixed="right"
-          label="操作"
-          width="200">
-        <template slot-scope="scope">
-          <el-button type="primary" size="mini"  @click="showDetail(scope.row)">详情</el-button>
-          <el-popconfirm
-              @confirm="delivery(scope.row)"
-              title="确定发货吗？"
-              v-if="scope.row.state==='已支付'"
-          >
+          <el-button type="primary" size="mini" @click="showDetail(scope.row)">详情</el-button>
+          <el-popconfirm @confirm="delivery(scope.row)" title="确定发货吗？" v-if="scope.row.state==='已支付'">
             <el-button type="primary" size="mini" slot="reference" style="margin-left: 10px">发货</el-button>
           </el-popconfirm>
         </template>
@@ -60,40 +40,34 @@
 
     <!--分页控件-->
     <div style="margin-top: 10px">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="pageNum"
-        :page-size="pageSize"
-        :page-sizes="[3, 5, 8, 10]"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-      >
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageNum"
+        :page-size="pageSize" :page-sizes="[3, 5, 8, 10]" layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
       </el-pagination>
     </div>
 
     <!--订单详情弹窗-->
     <el-dialog :visible.sync="dialogFormVisible">
-      <el-table :data="detail" background-color="black" >
-        <el-table-column  label="图片" width="150" >
-          <template   slot-scope="scope">
-            <img :src="baseApi + scope.row.img"  min-width="100" height="100" />
+      <el-table :data="detail" background-color="black">
+        <el-table-column label="图片" width="150">
+          <template slot-scope="scope">
+            <img :src="baseApi + scope.row.img" min-width="100" height="100" />
           </template>
         </el-table-column>
 
-        <el-table-column prop="goodId" label="商品id"  ></el-table-column>
-        <el-table-column prop="goodName" label="商品名称"  ></el-table-column>
-        <el-table-column prop="standard" label="商品规格"  ></el-table-column>
-        <el-table-column prop="price" label="单价"  ></el-table-column>
+        <el-table-column prop="goodId" label="商品id"></el-table-column>
+        <el-table-column prop="goodName" label="商品名称"></el-table-column>
+        <el-table-column prop="standard" label="商品规格"></el-table-column>
+        <el-table-column prop="price" label="单价"></el-table-column>
         <el-table-column prop="discount" label="折扣"></el-table-column>
 
-        <el-table-column label="实价" >
+        <el-table-column label="实价">
           <template slot-scope="scope">
             {{scope.row.price * scope.row.discount}}
           </template>
         </el-table-column>
-        <el-table-column prop="count" label="数量" ></el-table-column>
-        <el-table-column label="总价" >
+        <el-table-column prop="count" label="数量"></el-table-column>
+        <el-table-column label="总价">
           <template slot-scope="scope">
             {{scope.row.price * scope.row.discount * scope.row.count }}
           </template>
@@ -105,82 +79,89 @@
 </template>
 
 <script>
-import API from '../../utils/request'
-const url = "/api/order/"
+  //import API from '../../utils/request'
+  const url = "/api/order/"
 
-export default {
-  name: "Order",
-  //页面初始化数据
-  data() {
-    return {
-      options: [],
-      searchMode: '',
-      searchText: '',
-      user: {},
-      tableData: [],
-      pageNum: 1,
-      pageSize: 8,
-      entity: {},
-      total: 0,
-      dialogFormVisible: false,
-      detail:[],
-      baseApi: this.$store.state.baseApi,
-    };
-  },
-  //页面加载完成
-  created() {
-    this.load()
-  },
-  methods: {
-    handleSizeChange(pageSize) {
-      this.pageSize = pageSize
+  export default {
+    name: "Order",
+    //页面初始化数据
+    data() {
+      return {
+        options: [],
+        searchMode: '',
+        searchText: '',
+        user: {},
+        tableData: [],
+        pageNum: 1,
+        pageSize: 8,
+        entity: {},
+        total: 0,
+        dialogFormVisible: false,
+        detail: [],
+        baseApi: this.$store.state.baseApi,
+      };
+    },
+    //页面加载完成
+    created() {
       this.load()
     },
-    handleCurrentChange(pageNum) {
-      this.pageNum = pageNum
-      this.load()
-    },
-    //重置搜索
-    reset(){
-      this.searchMode = '';
-      this.searchText = '';
-      this.load()
-    },
-    //页面加载
-    load() {
-       API.get(url + "/page", {
+    methods: {
+      handleSizeChange(pageSize) {
+        this.pageSize = pageSize
+        this.load()
+      },
+      handleCurrentChange(pageNum) {
+        this.pageNum = pageNum
+        this.load()
+      },
+      //重置搜索
+      reset() {
+        this.searchMode = '';
+        this.searchText = '';
+        this.load()
+      },
+      //页面加载
+      async load() {
+        let res = await this.$http.get('/users/current/'+ this.pageNum +'/size/' + this.pageSize)
+        if (res.code == 200) {
+            this.tableData = res.data.list
+            this.total = res.data.total
+        } else {
+            this.$message.error(res.msg)
+        }
+        /* API.get(url + "/page", {
           params: {
             pageNum: this.pageNum,
             pageSize: this.pageSize,
             orderNo: this.searchText,
             state: this.searchMode
           }
-       }).then(res => {
+        }).then(res => {
           this.tableData = res.data.records || []
           this.total = res.data.total
-       })
-    },
-    //展示详情弹出
-    showDetail(row){
-        this.request.get("/api/order/orderNo/"+row.orderNo).then(res=>{
-          if(res.code==='200'){
-            this.detail=[];
+        }) */
+      },
+      //展示详情弹出
+      showDetail(row) {
+        this.request.get("/api/order/orderNo/" + row.orderNo).then(res => {
+          if (res.code === '200') {
+            this.detail = [];
             this.detail.push(res.data);
             this.dialogFormVisible = true;
           }
         })
-    },
-    //订单发货
-    delivery(order){
-        this.request.get("/api/order/delivery/"+order.orderNo).then(res=>{
-          if(res.code==='200'){
+      },
+      //订单发货
+      delivery(order) {
+        this.request.get("/api/order/delivery/" + order.orderNo).then(res => {
+          if (res.code === '200') {
             this.$message.success("成功发货");
             order.state = '已发货'
           }
         })
+      },
+
     },
+  };
 
-  },
-};
 </script>
-
