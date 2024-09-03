@@ -214,7 +214,6 @@
               <el-button
                 type="success"
                 class="payment-button"
-                @click="payOrder"
               >支付订单</el-button>
             </div>
           </div>
@@ -570,6 +569,7 @@ body {
 .cart-content {
   max-height: 60%;
   overflow-y: auto;
+  padding: 10px; /* 为内容添加内边距 */
 }
 .cart-item {
   display: flex;
@@ -603,23 +603,25 @@ body {
 }
 
 .drawer-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 20px;
+  position: absolute;
+  bottom: 25%; /* 距离底部 1/3 高度处 */
+  width: 100%;
+  justify-content: space-between; /* 将子元素分散到左右两侧 */
+  padding-left: 20px; /* 左边距 */
   padding-top: 10px;
   border-top: 1px solid #e0e0e0; /* 添加顶部边框，与内容区分 */
+  background-color: #fff; /* 确保背景色为白色，覆盖内容 */
 }
 
 .total-amount {
-  flex: 1;
-  text-align: left;
   font-size: 18px;
-  color: #000; /* 总金额字体颜色和大小 */
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #333;
 }
 
 .submit-order-button {
-  flex: 0;
+  margin-bottom: 10px;
 }
 
 .el-main {

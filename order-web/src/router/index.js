@@ -11,6 +11,7 @@ import Foods from '@/views/manage/file/Foods.vue'
 import FoodInfo from '@/views/manage/file/FoodInfo.vue'
 import Register from '@/views/Register.vue'
 import Manage from '../views/manage/Manage.vue'
+
 import {
   Message
 } from 'element-ui';
