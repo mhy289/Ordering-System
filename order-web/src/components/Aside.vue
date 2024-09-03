@@ -42,7 +42,7 @@
 
         <template slot="title">账户相关</template>
         <el-menu-item
-          index="/manage/user"
+          index="/manage/User"
           v-if="menuFlags.userMenu"
         >用户管理</el-menu-item>
       </el-submenu>

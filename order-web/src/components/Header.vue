@@ -52,7 +52,7 @@
         style="text-align: center"
       >
         <el-dropdown-item>
-          <div @click="$router.push('/manage/person')">个人信息</div>
+          <div @click="$router.push('/Person')">个人信息</div>
         </el-dropdown-item>
         <el-dropdown-item>
           <div @click="logout">退出</div>
