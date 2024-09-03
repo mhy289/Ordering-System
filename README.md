@@ -1,7 +1,12 @@
-# Ordering-System
+### 智能点餐系统
 
-#### 介绍
-点餐系统
+
+#### 项目介绍
+本项目是使用spring boot、mybatis、ajax、vue等技术实现的智能点餐系统。
+
+ **主要功能及适用场景** 
+
+本项目主要实现了线上点餐功能，客户可以查看餐品的信息并加入购物车下单结算，后台管理员可以管理餐品和订单的各项信息。该项目主要适用于餐厅点餐，能够取代传统的人工点餐，实现高效有序的餐厅服务。
 
 #### 软件架构
 软件架构说明
@@ -27,6 +32,10 @@
 4.  新建 Pull Request
 
 
-#### 特技
+#### 特别鸣谢
+1. Midway: https://midwayjs.org/
+1. Nuxt: https://www.nuxtjs.cn/
+1. AntDesignVue: https://www.antdv.com/
+1. Uniapp:https://uniapp.dcloud.io/
+1. Ant G2 可视化引擎: https://g2.antv.vision/zh/
 
-1.暂无
