@@ -17,16 +17,9 @@
 
 #### 参与贡献
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+1.尘心
 
 
 #### 特别鸣谢
-1. Midway: https://midwayjs.org/
-1. Nuxt: https://www.nuxtjs.cn/
-1. AntDesignVue: https://www.antdv.com/
-1. Uniapp:https://uniapp.dcloud.io/
-1. Ant G2 可视化引擎: https://g2.antv.vision/zh/
+1.尘心
 
